@@ -43,6 +43,8 @@ pip install -e .
 cp .env.example .env
 ```
 
+Put only `GEMINI_API_KEY=...` in `.env`, or set that variable in the active shell. This harness does not enable Vertex AI.
+
 Generate deterministic synthetic videos and validate their manifests:
 
 ```bash
@@ -82,3 +84,16 @@ The adapter follows the supplied Colab's Interactions API request shape and usag
 7. Adversarial negatives: expected-but-absent events and false premises.
 
 See [docs/METHODOLOGY.md](docs/METHODOLOGY.md) for hypotheses and grading rules.
+
+## Phase 2 priority run
+
+Phase 2 moves beyond the saturated short-video baseline. It adds reversible state, incomplete-action negatives, a sub-second event hidden in five minutes, timestamp localization, and a five-event order compressed into under one second.
+
+```bash
+avu-eval generate --suite data/tasks/phase2_priority.jsonl
+avu-eval validate --suite data/tasks/phase2_priority.jsonl
+avu-eval run --suite data/tasks/phase2_priority.jsonl --config configs/phase2_priority.yaml --output artifacts/runs/phase2-priority.jsonl
+avu-eval report --input artifacts/runs/phase2-priority.jsonl --output artifacts/reports/phase2-priority
+```
+
+The priority matrix is 36 attempts. Videos are uploaded before request timing, condition order is counterbalanced, each attempt has a hard timeout, timeouts are written as results, and rerunning the same command resumes missing jobs instead of duplicating completed rows. See [docs/PHASE2.md](docs/PHASE2.md).

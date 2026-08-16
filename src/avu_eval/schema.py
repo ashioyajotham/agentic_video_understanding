@@ -44,6 +44,9 @@ class Observation:
     input_tokens: int | None
     output_tokens: int | None
     latency_seconds: float
+    format_score: float = 0.0
+    strict_correct: bool = False
+    attempt_status: str = "completed"
     strategy_trace: str | None = None
     error: str | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
@@ -65,4 +68,3 @@ def load_tasks(path: str | Path) -> list[Task]:
             seen.add(task.id)
             tasks.append(task)
     return tasks
-

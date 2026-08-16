@@ -64,3 +64,25 @@ def grade(answer_type: str, expected: Any, output: str, tolerance: float | None 
         return len(target & actual) / len(target | actual) if target | actual else 1.0
     raise ValueError(f"Unsupported answer_type: {answer_type}")
 
+
+def grade_format(answer_type: str, output: str) -> float:
+    """Strictly score whether the requested machine-readable shape was followed."""
+    text = output.strip()
+    kind = answer_type.lower()
+    if kind == "number":
+        return float(bool(re.fullmatch(r"-?\d+(?:\.\d+)?", text)))
+    if kind in {"exact", "choice"}:
+        return float(bool(text) and "\n" not in text and len(text.split()) <= 8)
+    if kind in {"ordered_list", "set"}:
+        if text.startswith("```"):
+            return 0.0
+        try:
+            value = json.loads(text)
+        except json.JSONDecodeError:
+            return 0.0
+        if isinstance(value, dict):
+            value = value.get("answer", value.get("events", value.get("items")))
+        return float(isinstance(value, list))
+    if kind == "contains":
+        return 1.0
+    return 0.0

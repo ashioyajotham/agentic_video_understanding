@@ -1,0 +1,11 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+artifacts/videos/*.mp4
+artifacts/runs/*.jsonl
+artifacts/reports/*
+!artifacts/videos/.gitkeep
+!artifacts/runs/.gitkeep
+!artifacts/reports/.gitkeep
+

@@ -1,0 +1,8 @@
+model: models/gemini-3.6-flash-video-understanding-eap
+processing_modes: [static, agentic]
+repetitions: 3
+temperature: 0.0
+timeout_seconds: 600
+poll_seconds: 10
+max_retries: 2
+capture_strategy_trace: true

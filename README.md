@@ -5,7 +5,7 @@
 
 ---
 
-## 📖 Layman's Guide: Static vs. Agentic Video Understanding
+## Layman's Guide: Static vs. Agentic Video Understanding
 
 Most AI video models today use **Static Video Understanding**. When you feed an AI a 1-minute or 10-minute video, it acts like a human watching on 10× fast-forward: it samples a few frames per second (or downscales image resolution) to fit the whole video into its memory. 
 
@@ -13,12 +13,12 @@ Most AI video models today use **Static Video Understanding**. When you feed an 
 * **The Agentic Solution (AVU)**: Instead of passively watching a downsampled stream, an **Agentic Video Understanding** system acts like an **expert video investigator with a remote control and magnifying glass**. It:
   1. **Scans** the long overview to detect where the action happens (*"Anomalous crossing detected between 00:21.0s and 00:24.0s"*).
   2. **Invokes active tools** (like `ffmpeg` temporal frame slicing) to extract uncompressed, full-framerate frames for that exact 3-second window.
-  3. **Zooms into micro-details** at native pixel resolution to read micro-IDs and trace sub-frame physics.
-  4. **Delivers 100% precision** without burning millions of tokens processing the rest of the video at high FPS.
+  3. **Zooms into micro-details** at native pixel resolution to read micro-IDs and resolve observable frame-level ordering.
+  4. **Allocates more visual detail to the decisive window** instead of processing the entire video at high FPS.
 
 ---
 
-## 🎯 Poised Real-World Use Cases for AVU
+## Poised Real-World Use Cases for AVU
 
 | Industry | The Challenge for Static AI | The Agentic (AVU) Advantage |
 |---|---|---|
@@ -29,7 +29,7 @@ Most AI video models today use **Static Video Understanding**. When you feed an 
 
 ---
 
-## 🔬 Showcase Overview & Benchmark Suites
+## Showcase Overview & Benchmark Suites
 
 This repository provides deterministic, mathematically verifiable benchmarks to evaluate and demonstrate temporal video understanding on `models/gemini-3.6-flash-video-understanding-eap`.
 
@@ -56,14 +56,38 @@ This repository provides deterministic, mathematically verifiable benchmarks to 
 
 ---
 
-## 📊 Benchmark Results
+## Benchmark Results
 
-### Suite A: Fine-Grained Temporal Precision (8-second clips)
-Evaluates whether the model can track non-uniform speed, sub-0.10s gaps, and zero text labels:
+Treat these as controlled synthetic results, not production-readiness claims. The
+registered easy variants are useful as pipeline controls, while the hard variants
+are intentionally failure-finding probes.
 
-* **0.08s Gap Resolution (~2.4 frames)**: **100% Sequence Accuracy**.
-* **Zero Text Labels**: **100% Exact**. Proves model is not reading text; it performs visual color-space tracking.
-* **Variable Speeds (7 objects)**: **100% Exact Sequence Fidelity**.
+### Suite A: Registered rapid-crossing controls (8-second clips)
+Evaluates whether the model can follow deterministic color-order changes across
+short synthetic clips:
+
+```
+Static single-pass accuracy : 15/15 (100.0%)
+Agentic tool-loop accuracy  : 15/15 (100.0%)
+```
+
+This suite saturates both modes. It confirms that the harness, ground truth, and
+scoring path work, but it does not by itself prove agentic superiority.
+
+### Suite A-hard: Stress variants (8-second clips)
+Evaluates smaller objects, no text labels, tighter gaps, overlapping lanes,
+variable speeds, bidirectional motion, and decoys:
+
+```
+Static single-pass accuracy : 2/10 (20.0%)
+Agentic tool-loop accuracy  : 2/10 (20.0%)
+```
+
+The no-label control succeeded in both modes, so the showcase is not merely
+reading printed labels. The harder variants also expose current failure modes:
+both modes confuse `magenta` with `purple` on several runs, and the decoy /
+bidirectional setting can add non-crossing objects to the predicted sequence.
+These failures should remain visible in any public write-up.
 
 ### Suite B: Long-Duration Needle-in-a-Haystack (60s–90s clips + Micro-IDs)
 Evaluates why an **Agentic Tool Loop** is necessary over long video streams:
@@ -83,7 +107,7 @@ In a 60-second video stream, static downsampling inverted two near-simultaneous 
 
 ---
 
-## 🚀 Quick Start & Reproducibility
+## Quick Start & Reproducibility
 
 ### 1. Installation
 ```bash
@@ -127,6 +151,14 @@ python rapid_crossing/score_needle.py \
 
 See [CLAIMS.md](CLAIMS.md) for full protocol qualifiers.
 
-1. **Exactness across variants**: Agentic tool loops achieve 100% exactness across varied seeds, trajectories, and micro-IDs.
-2. **Temporal Grounding**: Model resolves chronological crossing order without relying on fixed color heuristics or spatial cues.
-3. **Tool-Assisted Superiority**: On long video streams with micro-details, active frame slicing delivers higher accuracy than static single-pass processing.
+1. **Short control variants saturated**: both static and agentic achieved 15/15 exact on the registered short clips.
+2. **Hard variants expose limits**: both static and agentic achieved 2/10 exact on the current hard suite, mainly due to color-name confusion and decoy/order errors.
+3. **Needle benchmark shows tool-assisted gain**: on the long clips with micro-IDs, agentic achieved 3/3 exact versus 2/3 for static single-pass processing.
+4. **No-label ablation passed**: the current hard no-label variant was exact in both modes, so the observed success is not solely OCR over printed color names.
+
+## Security Note
+
+Do not commit or share `.env`. The file is ignored by git, but local zip exports
+can still include it if the archive command is too broad. Use `.env.example` for
+configuration instructions and rotate any key that has been sent outside the
+private development environment.

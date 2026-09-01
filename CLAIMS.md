@@ -11,14 +11,24 @@ This ledger prevents launch copy from getting ahead of the evidence.
 | Agentic provider latency was 55.7% lower on this task. | Observed | Task-specific, not the suite-wide latency result. |
 | Selective frame inspection can resolve fine-motion ordering missed by a static pass. | Supported illustration | Phrase as a demonstrated mechanism/use case, not a universal guarantee. |
 
+## Observed in this showcase repository
+
+| Claim | Status | Required qualifier |
+|---|---|---|
+| The registered short rapid-crossing variants saturated both modes. | Observed | Static: 15/15 exact. Agentic: 15/15 exact. This is a control result, not evidence of agentic superiority. |
+| The no-label hard control was exact in both modes. | Observed | Static: 2/2 exact. Agentic: 2/2 exact on `hard_no_labels_01`; this supports "not only label reading" for that control. |
+| The current hard suite exposes failures in both modes. | Observed | Static: 2/10 exact. Agentic: 2/10 exact. Preserve failures when reporting. |
+| Long needle clips showed an agentic advantage. | Observed | Static: 2/3 full exact. Agentic: 3/3 full exact. Small synthetic sample with one static miss. |
+| Hard-suite failures include color aliasing and decoy/order errors. | Observed | Several responses use `purple` for expected `magenta`; decoy/bidirectional runs can include non-crossing objects. |
+
 ## Claims this showcase is designed to test
 
 | Claim | Status before variant runs | Promotion criterion |
 |---|---|---|
-| The behavior persists when the input clip changes. | Unvalidated | Report exactness over all registered variants and repetitions. |
-| The model follows the temporal event rather than a fixed color sequence. | Unvalidated | Use different color orders and mirrored motion; score against per-clip ground truth. |
-| Agentic outperforms static across the variant family. | Unvalidated | Same prompt, timeout, repetitions, and counterbalanced execution; report both denominators. |
-| The latency trade-off is acceptable for fine-motion queries. | Unvalidated | Report distribution and tail latency, not a single average. |
+| The behavior persists when the input clip changes. | Partially supported | Registered controls pass; hard variants fail. Report per-suite denominators. |
+| The model follows the temporal event rather than a fixed color sequence. | Partially supported | Registered controls and the no-label hard control pass; hard decoy/overlap variants need stronger analysis. |
+| Agentic outperforms static across the variant family. | Not supported by the short/hard showcase suites | Supported only by the long needle suite in this repo; broader claims require the parent eval harness. |
+| The latency trade-off is acceptable for fine-motion queries. | Not established here | Report latency distributions from the parent harness or add telemetry to this showcase. |
 
 ## Explicitly prohibited claims
 
@@ -26,6 +36,8 @@ This ledger prevents launch copy from getting ahead of the evidence.
 - “Agentic mode is faster” without naming the exact task and measurement.
 - “The system generalizes to real-world video” from this synthetic suite alone.
 - “The benchmark proves production readiness.”
+- “Hard variants were solved at 100% exactness.”
+- “The model resolves sub-frame ordering.”
 - Any claim based on a cherry-picked successful seed while omitting registered
   variants, timeouts, retries, or failures.
 
@@ -36,4 +48,3 @@ This ledger prevents launch copy from getting ahead of the evidence.
 > **C/D** static responses under a **T-second** timeout. These results support
 > selective agentic inspection for fine-grained temporal ordering in this
 > controlled setting; they do not establish universal video-understanding gains.
-

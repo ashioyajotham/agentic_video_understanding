@@ -52,9 +52,9 @@ def run_static(model: str, clip: Path) -> dict:
     )
     latency = time.perf_counter() - started
 
-    last_step = interaction.steps[-1] if interaction.steps else None
-    response_text = ""
-    if last_step:
+    response_text = interaction.output_text or ""
+    if not response_text and interaction.steps:
+        last_step = interaction.steps[-1]
         response_text = getattr(last_step, "text", str(last_step))
 
     return {

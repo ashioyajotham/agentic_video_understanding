@@ -30,7 +30,7 @@ def run_gemini(model: str, clip: Path, prompt: str) -> dict:
     try:
         from google import genai
     except ImportError as exc:
-        raise RuntimeError("Install the authorized Gemini EAP SDK build first") from exc
+        raise RuntimeError("Install the google-genai SDK first: pip install google-genai") from exc
 
     client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
     uploaded = client.files.upload(file=str(clip))
@@ -41,7 +41,7 @@ def run_gemini(model: str, clip: Path, prompt: str) -> dict:
         "thinking_level": "medium",
     }
 
-    # interactions.create expects typed content objects, not raw File/str
+    # Interleaved typed input content format
     input_content = [
         {"type": "video", "uri": uploaded.uri, "mime_type": "video/mp4"},
         {"type": "text", "text": prompt},
@@ -56,17 +56,17 @@ def run_gemini(model: str, clip: Path, prompt: str) -> dict:
     )
     latency = time.perf_counter() - started
 
-    # Extract the final step's text
-    last_step = interaction.steps[-1] if interaction.steps else None
-    response_text = ""
-    if last_step:
+    # Extract response text using official output_text or final step text
+    response_text = interaction.output_text or ""
+    if not response_text and interaction.steps:
+        last_step = interaction.steps[-1]
         response_text = getattr(last_step, "text", str(last_step))
 
-    usage = getattr(interaction, "usage_metadata", None)
+    usage = getattr(interaction, "usage", None)
     return {
         "response_text": response_text,
         "latency_seconds": latency,
-        "usage_metadata": str(usage) if usage is not None else None,
+        "usage": str(usage) if usage is not None else None,
     }
 
 

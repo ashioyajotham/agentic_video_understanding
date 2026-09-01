@@ -78,7 +78,10 @@ def run_agentic_pipeline(model: str, clip: Path) -> dict:
     )
     t_scan = time.perf_counter() - t0
 
-    step_text = getattr(interaction_scan.steps[-1], "text", str(interaction_scan.steps[-1]))
+    step_text = interaction_scan.output_text or ""
+    if not step_text and interaction_scan.steps:
+        last_s = interaction_scan.steps[-1]
+        step_text = getattr(last_s, "text", str(last_s))
     parsed_loc = parse_json_response(step_text)
     
     start_sec = 0.0
@@ -117,7 +120,11 @@ def run_agentic_pipeline(model: str, clip: Path) -> dict:
     )
     t_inspect = time.perf_counter() - t1
 
-    final_text = getattr(interaction_inspect.steps[-1], "text", str(interaction_inspect.steps[-1]))
+    final_text = interaction_inspect.output_text or ""
+    if not final_text and interaction_inspect.steps:
+        last_s = interaction_inspect.steps[-1]
+        final_text = getattr(last_s, "text", str(last_s))
+
     total_latency = time.perf_counter() - started_total
 
     return {

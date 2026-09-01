@@ -1,0 +1,4 @@
+Pillow>=12.0,<13
+PyYAML>=6.0,<7
+# Install the authorized Gemini EAP SDK build separately, as instructed by Google.
+

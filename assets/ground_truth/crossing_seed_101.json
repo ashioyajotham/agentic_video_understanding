@@ -1,0 +1,69 @@
+{
+  "variant_id": "crossing_seed_101",
+  "seed": 101,
+  "direction": "left_to_right",
+  "line_x": 458,
+  "crossing_gap_seconds": 0.26,
+  "objects": [
+    {
+      "color": "blue",
+      "crossing_time": 2.995639069435945,
+      "lane_y": 373.67999999999995,
+      "amplitude": 8.93286628731091,
+      "phase": 0.5583462763302702
+    },
+    {
+      "color": "magenta",
+      "crossing_time": 3.2556390694359454,
+      "lane_y": 442.8,
+      "amplitude": 14.698919366101027,
+      "phase": 2.302881504336377
+    },
+    {
+      "color": "orange",
+      "crossing_time": 3.515639069435945,
+      "lane_y": 97.2,
+      "amplitude": 11.716822638085333,
+      "phase": 2.0484960159239103
+    },
+    {
+      "color": "green",
+      "crossing_time": 3.775639069435945,
+      "lane_y": 304.56000000000006,
+      "amplitude": 13.374269186794383,
+      "phase": 2.5377429244790566
+    },
+    {
+      "color": "cyan",
+      "crossing_time": 4.035639069435945,
+      "lane_y": 235.44,
+      "amplitude": 9.082677041210156,
+      "phase": 2.702737521897909
+    },
+    {
+      "color": "red",
+      "crossing_time": 4.295639069435945,
+      "lane_y": 166.32,
+      "amplitude": 10.042898119371216,
+      "phase": 0.6961715667484634
+    }
+  ],
+  "expected_order": [
+    "blue",
+    "magenta",
+    "orange",
+    "green",
+    "cyan",
+    "red"
+  ],
+  "video": {
+    "width": 960,
+    "height": 540,
+    "fps": 30,
+    "duration_seconds": 8.0,
+    "object_radius": 24
+  },
+  "background": "#27272a",
+  "clip": "assets/clips/crossing_seed_101.mp4",
+  "clip_sha256": "d6010b54357ce6f4e1d7a49c04161ade7c76ad53ccc41b40697dd34e11195881"
+}

@@ -1,0 +1,272 @@
+{
+  "attempts": 10,
+  "completed": 10,
+  "exact": 2,
+  "exact_rate": 0.2,
+  "per_variant": {
+    "hard_decoys_bidirectional_05": {
+      "attempts": 2,
+      "exact": 0,
+      "exact_rate": 0.0
+    },
+    "hard_no_labels_01": {
+      "attempts": 2,
+      "exact": 2,
+      "exact_rate": 1.0
+    },
+    "hard_overlap_lanes_03": {
+      "attempts": 2,
+      "exact": 0,
+      "exact_rate": 0.0
+    },
+    "hard_tight_gap_02": {
+      "attempts": 2,
+      "exact": 0,
+      "exact_rate": 0.0
+    },
+    "hard_variable_speed_04": {
+      "attempts": 2,
+      "exact": 0,
+      "exact_rate": 0.0
+    }
+  },
+  "rows": [
+    {
+      "variant_id": "hard_decoys_bidirectional_05",
+      "mode": "agentic",
+      "attempt": 1,
+      "expected": [
+        "magenta",
+        "red",
+        "cyan",
+        "yellow",
+        "orange",
+        "green"
+      ],
+      "predicted": [
+        "blue",
+        "purple",
+        "blue",
+        "red",
+        "cyan",
+        "yellow",
+        "orange",
+        "green"
+      ],
+      "exact": false,
+      "status": "completed"
+    },
+    {
+      "variant_id": "hard_no_labels_01",
+      "mode": "agentic",
+      "attempt": 1,
+      "expected": [
+        "red",
+        "orange",
+        "cyan",
+        "green",
+        "yellow",
+        "blue"
+      ],
+      "predicted": [
+        "red",
+        "orange",
+        "cyan",
+        "green",
+        "yellow",
+        "blue"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "hard_overlap_lanes_03",
+      "mode": "agentic",
+      "attempt": 1,
+      "expected": [
+        "yellow",
+        "magenta",
+        "green",
+        "red",
+        "orange",
+        "cyan"
+      ],
+      "predicted": [
+        "yellow",
+        "purple",
+        "green",
+        "red",
+        "orange",
+        "blue"
+      ],
+      "exact": false,
+      "status": "completed"
+    },
+    {
+      "variant_id": "hard_tight_gap_02",
+      "mode": "agentic",
+      "attempt": 1,
+      "expected": [
+        "red",
+        "cyan",
+        "yellow",
+        "orange",
+        "magenta",
+        "blue"
+      ],
+      "predicted": [
+        "red",
+        "cyan",
+        "yellow",
+        "orange",
+        "purple",
+        "blue"
+      ],
+      "exact": false,
+      "status": "completed"
+    },
+    {
+      "variant_id": "hard_variable_speed_04",
+      "mode": "agentic",
+      "attempt": 1,
+      "expected": [
+        "cyan",
+        "orange",
+        "green",
+        "red",
+        "yellow",
+        "magenta",
+        "blue"
+      ],
+      "predicted": [
+        "cyan",
+        "orange",
+        "green",
+        "red",
+        "yellow",
+        "purple",
+        "blue"
+      ],
+      "exact": false,
+      "status": "completed"
+    },
+    {
+      "variant_id": "hard_variable_speed_04",
+      "mode": "agentic",
+      "attempt": 2,
+      "expected": [
+        "cyan",
+        "orange",
+        "green",
+        "red",
+        "yellow",
+        "magenta",
+        "blue"
+      ],
+      "predicted": [
+        "cyan",
+        "orange",
+        "green",
+        "red",
+        "yellow",
+        "purple",
+        "blue"
+      ],
+      "exact": false,
+      "status": "completed"
+    },
+    {
+      "variant_id": "hard_tight_gap_02",
+      "mode": "agentic",
+      "attempt": 2,
+      "expected": [
+        "red",
+        "cyan",
+        "yellow",
+        "orange",
+        "magenta",
+        "blue"
+      ],
+      "predicted": [
+        "red",
+        "cyan",
+        "yellow",
+        "orange",
+        "purple",
+        "blue"
+      ],
+      "exact": false,
+      "status": "completed"
+    },
+    {
+      "variant_id": "hard_overlap_lanes_03",
+      "mode": "agentic",
+      "attempt": 2,
+      "expected": [
+        "yellow",
+        "magenta",
+        "green",
+        "red",
+        "orange",
+        "cyan"
+      ],
+      "predicted": [
+        "yellow",
+        "purple",
+        "green",
+        "red",
+        "orange",
+        "blue"
+      ],
+      "exact": false,
+      "status": "completed"
+    },
+    {
+      "variant_id": "hard_no_labels_01",
+      "mode": "agentic",
+      "attempt": 2,
+      "expected": [
+        "red",
+        "orange",
+        "cyan",
+        "green",
+        "yellow",
+        "blue"
+      ],
+      "predicted": [
+        "red",
+        "orange",
+        "cyan",
+        "green",
+        "yellow",
+        "blue"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "hard_decoys_bidirectional_05",
+      "mode": "agentic",
+      "attempt": 2,
+      "expected": [
+        "magenta",
+        "red",
+        "cyan",
+        "yellow",
+        "orange",
+        "green"
+      ],
+      "predicted": [
+        "blue",
+        "purple",
+        "red",
+        "cyan",
+        "yellow",
+        "orange",
+        "green"
+      ],
+      "exact": false,
+      "status": "completed"
+    }
+  ]
+}

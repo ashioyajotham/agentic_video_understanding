@@ -7,9 +7,11 @@ google_genai-*.whl
 .venv/
 __pycache__/
 *.pyc
+*.egg-info/
 artifacts/videos/*.mp4
 artifacts/runs/*.jsonl
 artifacts/reports/*
 !artifacts/videos/.gitkeep
 !artifacts/runs/.gitkeep
 !artifacts/reports/.gitkeep
+

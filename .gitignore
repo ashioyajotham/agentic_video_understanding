@@ -17,3 +17,4 @@ showcase/generated_canonical_phase4/
 !artifacts/reports/.gitkeep
 # Local evaluator outputs; frozen public evidence lives under results/
 /artifacts/runs/
+/submission/x-post-phase4.md

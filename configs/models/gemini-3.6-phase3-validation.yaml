@@ -1,0 +1,7 @@
+model: models/gemini-3.6-flash-video-understanding-eap
+processing_modes: [static, agentic]
+repetitions: 1
+timeout_seconds: 180
+poll_seconds: 10
+order_strategy: counterbalanced
+resume: true

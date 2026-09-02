@@ -1,0 +1,61 @@
+name: avu-rapid-crossing-showcase
+status: public-api
+source_evaluation:
+  task: rapid-crossing-order
+  primary_attempts_per_mode: 3
+  observed:
+    agentic_exact: 3
+    static_exact: 0
+    task_specific_agentic_provider_latency_delta_percent: -55.7
+  evidence_policy: reference-parent-artifacts-do-not-copy-or-rewrite
+showcase:
+  semantic_task: recover the order in which colored objects cross the reference line
+  prompt: rapid_crossing/prompt.txt
+  canonical_benchmark:
+    suite: data/tasks/phase4_tracking_ablation.jsonl
+    generator: src/avu_eval/synthetic.py
+    export_dir: showcase/generated_canonical_phase4
+    exact_render_required: true
+    claim_evidence: registered-run-complete
+    registered_result:
+      model: gemini-3.7-flash
+      sdk: google-genai-2.21.0
+      repetitions_per_mode: 3
+      attempts_per_mode: 24
+      static_exact: 3
+      agentic_exact: 14
+      static_mean_semantic: 0.320
+      agentic_mean_semantic: 0.893
+      static_mean_provider_latency_seconds: 11.452
+      agentic_mean_provider_latency_seconds: 15.376
+      static_mean_total_tokens: 2470.375
+      agentic_mean_total_tokens: 9071.250
+      agentic_processing_observed: 24
+      combined_hard_exact_per_mode: 0
+  demo_suite:
+    spec: showcase/rapid_crossing/variants_hard.json
+    generator: showcase/rapid_crossing/generate_variants.py
+    render: 960x540-stochastic-seeded
+    claim_evidence: false
+    purpose: visual-demonstration-and-exploration
+  historical_results:
+    registered_controls: showcase/generated
+    hard_suite: showcase/generated_hard
+    needle_suite: showcase/generated_needle
+    mutation_policy: preserve-do-not-relabel-as-phase4
+validation:
+  repetitions_per_mode: 3
+  modes:
+    - static
+    - agentic
+  timeout_seconds: 180
+  counterbalance: true
+  primary_and_diagnostic_runs_separate: true
+release:
+  feature_public_since: 2026-09-01
+  public_export_required: true
+  review_before_publication:
+    - unreleased model identifiers
+    - authorized project identifiers
+    - private SDK locations
+    - raw confidential service traces

@@ -1,0 +1,20 @@
+# Secrets & Local Environment
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# OS / Editor
+.DS_Store
+.vscode/
+.idea/
+
+# Scratch & Temporary Logs
+*.log

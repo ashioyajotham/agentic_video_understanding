@@ -1,0 +1,10 @@
+Watch the complete video and determine the chronological order in which the
+colored circles cross the vertical white reference line. A circle counts as
+crossing when its center passes the line. Track the events over time; do not use
+the circles' final positions to infer the order.
+
+Return exactly one JSON object with no Markdown or explanation:
+{"order":["color_1","color_2","color_3"]}
+
+Use the lowercase color names visible in the video.
+

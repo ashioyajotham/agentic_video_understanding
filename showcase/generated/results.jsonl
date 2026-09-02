@@ -1,0 +1,5 @@
+{"variant_id": "crossing_seed_011", "mode": "agentic", "attempt": 1, "status": "completed", "response_text": "{\"order\": [\"orange\", \"cyan\", \"yellow\", \"magenta\", \"blue\"]}"}
+{"variant_id": "crossing_seed_023", "mode": "agentic", "attempt": 1, "status": "completed", "response_text": "{\"order\": [\"orange\", \"cyan\", \"blue\", \"magenta\", \"red\"]}"}
+{"variant_id": "crossing_seed_047", "mode": "agentic", "attempt": 1, "status": "completed", "response_text": "{\"order\": [\"green\", \"blue\", \"red\", \"magenta\", \"orange\", \"yellow\"]}"}
+{"variant_id": "crossing_seed_071", "mode": "agentic", "attempt": 1, "status": "completed", "response_text": "{\"order\": [\"cyan\", \"blue\", \"red\", \"green\", \"magenta\"]}"}
+{"variant_id": "crossing_seed_101", "mode": "agentic", "attempt": 1, "status": "completed", "response_text": "{\"order\": [\"blue\", \"magenta\", \"orange\", \"green\", \"cyan\", \"red\"]}"}

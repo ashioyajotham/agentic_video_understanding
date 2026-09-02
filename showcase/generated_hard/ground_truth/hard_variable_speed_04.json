@@ -1,0 +1,100 @@
+{
+  "variant_id": "hard_variable_speed_04",
+  "seed": 204,
+  "direction": "right_to_left",
+  "line_x": 431,
+  "crossing_gap_seconds": 0.1,
+  "objects": [
+    {
+      "color": "cyan",
+      "crossing_time": 2.9816127622154442,
+      "lane_y": 154.8,
+      "amplitude": 15.598694148443478,
+      "phase": 1.2868144899728475,
+      "velocity_scale": 0.7820829051375815,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "orange",
+      "crossing_time": 3.0816127622154443,
+      "lane_y": 442.8,
+      "amplitude": 11.497167868714971,
+      "phase": 1.2912179975866407,
+      "velocity_scale": 1.348625381616026,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "green",
+      "crossing_time": 3.1816127622154444,
+      "lane_y": 97.2,
+      "amplitude": 14.460300015966475,
+      "phase": 1.6813567531333358,
+      "velocity_scale": 1.3666042316411,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "red",
+      "crossing_time": 3.2816127622154445,
+      "lane_y": 212.39999999999998,
+      "amplitude": 15.149529153841273,
+      "phase": 3.793214380202524,
+      "velocity_scale": 0.9248534233674511,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "yellow",
+      "crossing_time": 3.381612762215444,
+      "lane_y": 327.6,
+      "amplitude": 8.270604622870211,
+      "phase": 3.4828126755458912,
+      "velocity_scale": 1.2195024904271765,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "magenta",
+      "crossing_time": 3.4816127622154442,
+      "lane_y": 385.20000000000005,
+      "amplitude": 10.715877451171165,
+      "phase": 6.094309593792093,
+      "velocity_scale": 0.9582208955556037,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "blue",
+      "crossing_time": 3.5816127622154443,
+      "lane_y": 270.0,
+      "amplitude": 11.44763145991691,
+      "phase": 2.034318300752764,
+      "velocity_scale": 0.6513036813683245,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    }
+  ],
+  "expected_order": [
+    "cyan",
+    "orange",
+    "green",
+    "red",
+    "yellow",
+    "magenta",
+    "blue"
+  ],
+  "video": {
+    "width": 960,
+    "height": 540,
+    "fps": 30,
+    "duration_seconds": 8.0,
+    "object_radius": 24
+  },
+  "background": "#0f172a",
+  "show_labels": false,
+  "object_radius": 14,
+  "clip": "generated_hard/clips/hard_variable_speed_04.mp4",
+  "clip_sha256": "ba33452b7bb6a8eca1420a18ca83f43732ececfbb2d262160ea826f53c3de503"
+}

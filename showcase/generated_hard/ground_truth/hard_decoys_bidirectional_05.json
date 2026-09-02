@@ -1,0 +1,109 @@
+{
+  "variant_id": "hard_decoys_bidirectional_05",
+  "seed": 205,
+  "direction": "left_to_right",
+  "line_x": 438,
+  "crossing_gap_seconds": 0.1,
+  "objects": [
+    {
+      "color": "magenta",
+      "crossing_time": 3.1419000319253034,
+      "lane_y": 373.67999999999995,
+      "amplitude": 10.235686393568969,
+      "phase": 4.77478130250637,
+      "velocity_scale": 1.0,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "red",
+      "crossing_time": 3.2419000319253035,
+      "lane_y": 97.2,
+      "amplitude": 7.860186152462776,
+      "phase": 0.5153909362691225,
+      "velocity_scale": 1.0,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "cyan",
+      "crossing_time": 3.3419000319253036,
+      "lane_y": 304.56000000000006,
+      "amplitude": 15.468451218519323,
+      "phase": 1.9154643681541166,
+      "velocity_scale": 1.0,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "yellow",
+      "crossing_time": 3.4419000319253037,
+      "lane_y": 235.44,
+      "amplitude": 16.952531181312036,
+      "phase": 3.3793356415978955,
+      "velocity_scale": 1.0,
+      "obj_direction": 1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "orange",
+      "crossing_time": 3.5419000319253033,
+      "lane_y": 166.32,
+      "amplitude": 8.15275647325605,
+      "phase": 5.9949769966668836,
+      "velocity_scale": 1.0,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "green",
+      "crossing_time": 3.6419000319253034,
+      "lane_y": 442.8,
+      "amplitude": 16.983624366867737,
+      "phase": 6.180725179084127,
+      "velocity_scale": 1.0,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "blue",
+      "crossing_time": 3.0966784590413354,
+      "lane_y": 116.90460871980864,
+      "amplitude": 11.634857196413204,
+      "phase": 1.2897099410700985,
+      "velocity_scale": 0.9044026768208803,
+      "obj_direction": 1.0,
+      "is_decoy": true
+    },
+    {
+      "color": "blue",
+      "crossing_time": 2.861475583861007,
+      "lane_y": 270.66678242302896,
+      "amplitude": 10.068203781179525,
+      "phase": 5.986306771116911,
+      "velocity_scale": 0.8077157385590388,
+      "obj_direction": 1.0,
+      "is_decoy": true
+    }
+  ],
+  "expected_order": [
+    "magenta",
+    "red",
+    "cyan",
+    "yellow",
+    "orange",
+    "green"
+  ],
+  "video": {
+    "width": 960,
+    "height": 540,
+    "fps": 30,
+    "duration_seconds": 8.0,
+    "object_radius": 24
+  },
+  "background": "#27272a",
+  "show_labels": false,
+  "object_radius": 15,
+  "clip": "generated_hard/clips/hard_decoys_bidirectional_05.mp4",
+  "clip_sha256": "b2f00dee753e144b326190c0ca93d23e9699667b8e8d544536f1ffd254ae5b3d"
+}

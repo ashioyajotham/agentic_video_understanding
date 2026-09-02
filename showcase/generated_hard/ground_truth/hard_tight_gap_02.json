@@ -1,0 +1,89 @@
+{
+  "variant_id": "hard_tight_gap_02",
+  "seed": 202,
+  "direction": "right_to_left",
+  "line_x": 530,
+  "crossing_gap_seconds": 0.08,
+  "objects": [
+    {
+      "color": "red",
+      "crossing_time": 2.985387510886963,
+      "lane_y": 442.8,
+      "amplitude": 13.297553674224966,
+      "phase": 4.741608714187318,
+      "velocity_scale": 1.0,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "cyan",
+      "crossing_time": 3.0653875108869633,
+      "lane_y": 304.56000000000006,
+      "amplitude": 13.427424663526255,
+      "phase": 1.2078264963161223,
+      "velocity_scale": 1.0,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "yellow",
+      "crossing_time": 3.1453875108869633,
+      "lane_y": 97.2,
+      "amplitude": 11.022692168264042,
+      "phase": 2.9913910919257627,
+      "velocity_scale": 1.0,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "orange",
+      "crossing_time": 3.2253875108869634,
+      "lane_y": 166.32,
+      "amplitude": 11.25714190788172,
+      "phase": 4.683426700088335,
+      "velocity_scale": 1.0,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "magenta",
+      "crossing_time": 3.305387510886963,
+      "lane_y": 235.44,
+      "amplitude": 15.28169768362823,
+      "phase": 4.12773889779069,
+      "velocity_scale": 1.0,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "blue",
+      "crossing_time": 3.385387510886963,
+      "lane_y": 373.67999999999995,
+      "amplitude": 12.223452169341703,
+      "phase": 4.730205883282165,
+      "velocity_scale": 1.0,
+      "obj_direction": -1.0,
+      "is_decoy": false
+    }
+  ],
+  "expected_order": [
+    "red",
+    "cyan",
+    "yellow",
+    "orange",
+    "magenta",
+    "blue"
+  ],
+  "video": {
+    "width": 960,
+    "height": 540,
+    "fps": 30,
+    "duration_seconds": 8.0,
+    "object_radius": 24
+  },
+  "background": "#172554",
+  "show_labels": false,
+  "object_radius": 16,
+  "clip": "generated_hard/clips/hard_tight_gap_02.mp4",
+  "clip_sha256": "4f96ebac64b41585a2d1fc18b2bd4d5d9288d3e54ff3e5ea5d094f7e353ff04d"
+}

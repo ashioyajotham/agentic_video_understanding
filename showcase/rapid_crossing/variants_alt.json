@@ -1,0 +1,51 @@
+{
+  "video": {
+    "width": 960,
+    "height": 540,
+    "fps": 30,
+    "duration_seconds": 8.0,
+    "object_radius": 24
+  },
+  "variants": [
+    {
+      "id": "crossing_seed_011",
+      "seed": 1011,
+      "object_count": 5,
+      "direction": "left_to_right",
+      "crossing_gap_seconds": 0.34,
+      "background": "#111827"
+    },
+    {
+      "id": "crossing_seed_023",
+      "seed": 1023,
+      "object_count": 5,
+      "direction": "right_to_left",
+      "crossing_gap_seconds": 0.28,
+      "background": "#172554"
+    },
+    {
+      "id": "crossing_seed_047",
+      "seed": 1047,
+      "object_count": 6,
+      "direction": "left_to_right",
+      "crossing_gap_seconds": 0.22,
+      "background": "#1f2937"
+    },
+    {
+      "id": "crossing_seed_071",
+      "seed": 1071,
+      "object_count": 5,
+      "direction": "right_to_left",
+      "crossing_gap_seconds": 0.18,
+      "background": "#0f172a"
+    },
+    {
+      "id": "crossing_seed_101",
+      "seed": 1101,
+      "object_count": 6,
+      "direction": "left_to_right",
+      "crossing_gap_seconds": 0.26,
+      "background": "#27272a"
+    }
+  ]
+}

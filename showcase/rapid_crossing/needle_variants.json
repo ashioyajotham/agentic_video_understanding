@@ -1,0 +1,43 @@
+{
+  "video": {
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "object_radius": 22
+  },
+  "variants": [
+    {
+      "id": "needle_event_22s",
+      "seed": 301,
+      "duration_seconds": 60.0,
+      "event_start_seconds": 22.3,
+      "object_count": 5,
+      "direction": "left_to_right",
+      "crossing_gap_seconds": 0.12,
+      "ambient_decoys": 4,
+      "background": "#0f172a"
+    },
+    {
+      "id": "needle_event_48s",
+      "seed": 302,
+      "duration_seconds": 60.0,
+      "event_start_seconds": 47.8,
+      "object_count": 6,
+      "direction": "right_to_left",
+      "crossing_gap_seconds": 0.09,
+      "ambient_decoys": 5,
+      "background": "#111827"
+    },
+    {
+      "id": "needle_event_68s",
+      "seed": 303,
+      "duration_seconds": 90.0,
+      "event_start_seconds": 68.5,
+      "object_count": 6,
+      "direction": "left_to_right",
+      "crossing_gap_seconds": 0.08,
+      "ambient_decoys": 6,
+      "background": "#1e1b4b"
+    }
+  ]
+}

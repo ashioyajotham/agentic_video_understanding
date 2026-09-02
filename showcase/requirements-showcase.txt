@@ -1,0 +1,4 @@
+Pillow>=11.0,<13
+PyYAML>=6.0,<7
+google-genai>=2.3.0
+pytest>=8.0

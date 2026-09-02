@@ -51,9 +51,14 @@ video_file = client.files.upload(
 
 # 3. Query using the Interactions API
 interaction = client.interactions.create(
-    model="gemini-3.7-flash",  # or models/gemini-3.6-flash-video-understanding-eap
+    model="gemini-3.7-flash",
     input=[
-        {"type": "video", "uri": video_file.uri, "mime_type": "video/mp4"},
+        {
+            "type": "video",
+            "uri": video_file.uri,
+            "mime_type": "video/mp4",
+            "processing": "agentic",
+        },
         {"type": "text", "text": "Identify the exact timestamps where objects cross the center reference line."}
     ],
     tools=[{"type": "google_search"}],
@@ -66,6 +71,11 @@ interaction = client.interactions.create(
 # 4. Extract model response
 print(interaction.steps[-1].text)
 ```
+
+The `processing` field is the native public-API treatment used by the canonical
+benchmark. The historical `agentic_runner.py` demonstrates an explicit
+application-managed frame-extraction loop; it is illustrative and is not the
+same experimental condition as native agentic processing.
 
 > **Official SDK Reference**: For complete API documentation, visit the [Google AI for Developers](https://ai.google.dev/) portal.
 
@@ -130,8 +140,23 @@ The eight-task suite and its generator validations are complete, including the
 matched label/no-label control, minimum two-frame crossing gaps, explicit
 decoys, bidirectional motion, controlled overlap, and ground-truth checks.
 
-**Model-result status: not yet measured.** Passing validation and unit tests
-establishes stimulus integrity, not model accuracy.
+The registered public-API cohort contains 48/48 completed observations:
+
+- Static: **3/24 registered exact**, mean semantic score **0.320**.
+- Agentic: **14/24 registered exact**, mean semantic score **0.893**.
+- Agentic scored higher in 19/24 matched cells, tied in three, and scored lower
+  in two.
+- The labeled and unlabeled controls each produced static 0/3 versus agentic
+  3/3, so visible text did not explain the separation.
+- Agentic was 34.3% slower by mean provider latency and used 3.67× as many total
+  tokens.
+- Both modes were 0/3 exact on the combined-hard condition.
+
+Seven agentic non-exact responses were ordinary color-name disagreements
+(`teal`/`cyan`, `pink`/`magenta`) with the full order preserved. The registered
+score does not normalize these aliases. See [CLAIMS.md](CLAIMS.md) for the
+approved wording and complete evidence boundary. The exact source rows and
+generated report are available in [`../results/phase4/`](../results/phase4/README.md).
 
 ### Historical 960×540 showcase suites
 
@@ -217,4 +242,6 @@ See [CLAIMS.md](CLAIMS.md) for full protocol qualifiers.
 1. **Short registered controls saturated:** both modes achieved 15/15 exact.
 2. **Historical hard-suite failures are preserved:** both modes achieved 2/10 exact.
 3. **Long needle illustration:** static achieved 2/3 full exact versus agentic 3/3 on a small synthetic suite.
-4. **Canonical Phase 4:** stimuli validated; model performance not yet measured.
+4. **Canonical Phase 4:** static 3/24 exact versus native agentic 14/24 on the
+   registered Gemini 3.7 Flash cohort; agentic was slower and used more total
+   tokens.

@@ -34,9 +34,11 @@ renders remain useful illustrations, but are `demo_suite` artifacts.
 
 ## Preserve one source of truth
 
-1. Keep original evaluation JSONL under the parent `artifacts/runs/` tree.
+1. Keep working evaluation JSONL under `artifacts/runs/`; copy a frozen,
+   checksum-recorded source file to `results/phase4/` for public auditability.
 2. Treat the export manifest and canonical task JSONL as the stimulus provenance
-   record; add model-run provenance separately after execution.
+   record; keep model-run provenance in the unedited evaluator JSONL and generated
+   reports.
 3. Do not copy or manually edit original responses inside the showcase.
 4. Generate launch-safe summaries from source rows with a deterministic export
    script.
@@ -72,4 +74,6 @@ selection strategy.
 - Score without removing failed attempts or malformed responses.
 - Report the exact Phase 4 denominators separately from historical showcase suites.
 - Select the strongest representative clip only after reporting the aggregate.
-- Keep the complete package private until Google explicitly clears it.
+- Remove historical private identifiers, SDK locations, project identifiers,
+  and confidential raw traces before publishing. Native AVU itself is public;
+  this hygiene requirement applies to inherited EAP artifacts, not the feature.

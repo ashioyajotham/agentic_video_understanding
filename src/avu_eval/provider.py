@@ -2,9 +2,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from importlib.metadata import PackageNotFoundError, version
 import multiprocessing as mp
 import os
 import queue
+import re
 import time
 from typing import Any
 
@@ -24,6 +26,20 @@ class ProviderResult:
     thought_tokens: int | None
     strategy_trace: str | None
     raw_metadata: dict[str, Any]
+
+
+def _step_type(step: Any) -> str:
+    """Return the stable public Interactions API step discriminator."""
+    value = getattr(step, "type", None)
+    if value is None and isinstance(step, dict):
+        value = step.get("type")
+    raw = str(value or type(step).__name__).split(".")[-1].replace("-", "_")
+    return re.sub(r"(?<!^)(?=[A-Z])", "_", raw).lower()
+
+
+def _file_state_name(file: Any) -> str:
+    state = getattr(file, "state", "")
+    return str(getattr(state, "name", state)).upper()
 
 
 def _interaction_worker(result_queue, payload: dict[str, Any]) -> None:
@@ -52,9 +68,13 @@ def _interaction_worker(result_queue, payload: dict[str, Any]) -> None:
             {"modality": str(getattr(item, "modality", "unknown")), "tokens": getattr(item, "tokens", None)}
             for item in (getattr(usage, "input_tokens_by_modality", None) or [])
         ]
-        trace = getattr(interaction, "video_processing_strategy", None)
-        if trace is None:
-            trace = getattr(interaction, "thoughts", None)
+        step_types = [_step_type(step) for step in (getattr(interaction, "steps", None) or [])]
+        processing_call_count = step_types.count("processing_call")
+        processing_result_count = step_types.count("processing_result")
+        try:
+            sdk_version = version("google-genai")
+        except PackageNotFoundError:
+            sdk_version = None
         result_queue.put({
             "ok": True,
             "text": interaction.output_text,
@@ -62,7 +82,12 @@ def _interaction_worker(result_queue, payload: dict[str, Any]) -> None:
             "output_tokens": getattr(usage, "total_output_tokens", None),
             "total_tokens": getattr(usage, "total_tokens", None),
             "thought_tokens": getattr(usage, "total_thought_tokens", None),
-            "strategy_trace": str(trace) if trace else None,
+            "strategy_trace": ",".join(step_types) if step_types else None,
+            "processing_step_types": step_types,
+            "processing_call_count": processing_call_count,
+            "processing_result_count": processing_result_count,
+            "agentic_processing_observed": processing_call_count > 0 and processing_result_count > 0,
+            "google_genai_version": sdk_version,
             "modality_usage": modality_usage,
             "provider_latency_seconds": time.perf_counter() - started,
         })
@@ -70,14 +95,16 @@ def _interaction_worker(result_queue, payload: dict[str, Any]) -> None:
         result_queue.put({"ok": False, "error": f"{type(exc).__name__}: {exc}"})
 
 
-class GeminiEAPProvider:
-    """Thin adapter kept deliberately isolated because the unreleased SDK may change."""
+class GeminiProvider:
+    """Thin adapter for the public Gemini API and Interactions API."""
 
     def __init__(self, poll_seconds: int = 10, timeout_seconds: int = 180):
         try:
             from google import genai
         except ImportError as exc:
-            raise RuntimeError("Install the EAP google-genai wheel before running API experiments") from exc
+            raise RuntimeError(
+                "Install the public Gemini SDK with: python -m pip install --upgrade google-genai"
+            ) from exc
         api_key = os.environ.get("GEMINI_API_KEY")
         if not api_key:
             raise RuntimeError("GEMINI_API_KEY is not set")
@@ -92,12 +119,12 @@ class GeminiEAPProvider:
             return self._cache[path]
         uploaded = self.client.files.upload(file=str(path))
         started = time.perf_counter()
-        while str(getattr(uploaded, "state", "")).endswith("PROCESSING"):
+        while _file_state_name(uploaded).endswith("PROCESSING"):
             if time.perf_counter() - started > self.timeout_seconds:
                 raise TimeoutError(f"Video preparation exceeded {self.timeout_seconds} seconds for {path.name}")
             time.sleep(self.poll_seconds)
             uploaded = self.client.files.get(name=uploaded.name)
-        if str(getattr(uploaded, "state", "")).endswith("FAILED"):
+        if _file_state_name(uploaded).endswith("FAILED"):
             raise RuntimeError(f"Video processing failed for {path.name}")
         self._cache[path] = uploaded
         return uploaded
@@ -136,5 +163,15 @@ class GeminiEAPProvider:
                 "thought_tokens": payload["thought_tokens"],
                 "input_tokens_by_modality": payload["modality_usage"],
                 "provider_latency_seconds": payload["provider_latency_seconds"],
+                "processing_step_types": payload.get("processing_step_types", []),
+                "processing_call_count": payload.get("processing_call_count", 0),
+                "processing_result_count": payload.get("processing_result_count", 0),
+                "agentic_processing_observed": payload.get("agentic_processing_observed", False),
+                "google_genai_version": payload.get("google_genai_version"),
             },
         )
+
+
+# Compatibility for older imports and external notebooks. New code should use
+# GeminiProvider; retaining this alias avoids breaking historical evaluator code.
+GeminiEAPProvider = GeminiProvider

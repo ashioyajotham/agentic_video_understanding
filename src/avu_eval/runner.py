@@ -7,7 +7,7 @@ import time
 from typing import Any
 
 from .grading import grade, grade_format
-from .provider import GeminiEAPProvider
+from .provider import GeminiProvider
 from .schema import Observation, Task
 
 
@@ -50,7 +50,7 @@ def run(tasks: list[Task], config: dict[str, Any], root: Path, output: Path, dry
         for task, mode, repetition in jobs:
             print(json.dumps({"task": task.id, "mode": mode, "repetition": repetition, "video": task.video}))
         return 0
-    provider = GeminiEAPProvider(
+    provider = GeminiProvider(
         poll_seconds=int(config.get("poll_seconds", 10)),
         timeout_seconds=int(config.get("timeout_seconds", 180)),
     )

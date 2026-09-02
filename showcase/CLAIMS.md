@@ -10,6 +10,7 @@ This ledger prevents launch copy from getting ahead of the evidence.
 | `showcase/generated_canonical_phase4/` | Hash-verified copies of canonical stimuli and ground truth | Inherits Phase 4 provenance; the export itself contains no model result. |
 | `showcase/rapid_crossing/variants_hard.json` rendered at 960×540 | Seeded visual demo and historical exploratory suite | Demo-specific results only; never relabel as Phase 4 evidence. |
 | `showcase/generated_hard/` | Historical showcase outputs | Preserve with original denominators and failures. |
+| `results/phase4/gemini-3.7-phase4-replicated.jsonl` | Exact 48-row registered public run | Primary model-result evidence; reports must be reproducible from these rows. |
 
 Changing resolution, renderer, trajectories, labels, or encoding creates a new
 stimulus. Results do not transfer between the 960×540 showcase and the 640×360
@@ -40,15 +41,41 @@ canonical benchmark merely because their concepts map to one another.
 |---|---|---|
 | The behavior persists when the input clip changes. | Partially supported | Registered controls pass; hard variants fail. Report per-suite denominators. |
 | The model follows the temporal event rather than a fixed color sequence. | Partially supported | Registered controls and the no-label hard control pass; hard decoy/overlap variants need stronger analysis. |
-| Agentic outperforms static across the variant family. | Not supported by the short/hard showcase suites | Supported only by the long needle suite in this repo; broader claims require the parent eval harness. |
-| The latency trade-off is acceptable for fine-motion queries. | Not established here | Report latency distributions from the parent harness or add telemetry to this showcase. |
+| Agentic outperforms static across the variant family. | Supported on canonical Phase 4; not supported by the historical short/hard demo suites | Canonical: agentic scored higher in 19/24 matched cells, tied three, and lost two. Keep renderer-specific results separate. |
+| Agentic improves quality without a resource penalty. | Refuted on canonical Phase 4 | Agentic was 34.3% slower by mean provider latency and used 3.67× mean total tokens. |
 
-## Phase 4 status
+## Canonical Phase 4 result: Gemini 3.7 Flash
 
-The canonical Phase 4 suite contains eight validated tasks and a matched
-label/no-label control. Generator validation and unit tests establish stimulus
-integrity; they do **not** establish model performance. Until registered calls
-are completed and scored, its model-result status is **not yet measured**.
+The registered public-API run is complete: eight deterministic tasks, two
+processing modes, and three repetitions produced 48/48 completed attempts.
+All results below come from the canonical 640×360 renders and must not be
+attributed to the separate 960×540 demo suite.
+
+| Metric | Static | Agentic |
+|---|---:|---:|
+| Attempts completed | 24/24 | 24/24 |
+| Registered exact | 3/24 (12.5%) | **14/24 (58.3%)** |
+| Mean semantic score | 0.320 | **0.893** |
+| Strict JSON | 0/24 | 0/24 |
+| Mean provider latency | **11.452 s** | 15.376 s |
+| Mean total tokens | **2,470** | 9,071 |
+| Native processing steps observed | 0/24 | **24/24** |
+
+Agentic scored higher in 19/24 matched cells, tied in three, and scored lower
+in two. It was faster in 7/24 cells and used fewer total tokens in 0/24.
+
+The matched OCR ablation reproduced across all attempts: static was exact in
+0/3 unlabeled and 0/3 labeled attempts, while agentic was exact in 3/3 for each
+condition. Visible labels therefore did not explain the observed separation.
+
+Seven of the ten non-exact agentic responses preserved the complete expected
+order and differed only by `teal`/`cyan` or `pink`/`magenta`. Treating these as
+aliases yields a diagnostic—not registered—exact result of 21/24 agentic versus
+4/24 static. The three remaining agentic failures were all on
+`phase4_combined_hard`; this is the demonstrated breaking point.
+
+The result supports a controlled fine-motion tracking advantage. It does not
+support universal accuracy, speed, cost, or real-world generalization claims.
 
 ## Explicitly prohibited claims
 
@@ -63,10 +90,13 @@ are completed and scored, its model-result status is **not yet measured**.
 - Any claim based on a cherry-picked successful seed while omitting registered
   variants, timeouts, retries, or failures.
 
-## Claim template after validation
+## Approved Phase 4 claim
 
-> Across **N** preregistered synthetic rapid-crossing variants and **R** repeated
-> attempts per mode, **MODEL** achieved **A/B** exact agentic responses versus
-> **C/D** static responses under a **T-second** timeout. These results support
-> selective agentic inspection for fine-grained temporal ordering in this
-> controlled setting; they do not establish universal video-understanding gains.
+> Across 24 matched attempts on eight registered deterministic tracking
+> ablations, Gemini 3.7 Flash agentic video processing achieved 14/24 registered
+> exact responses versus 3/24 for static processing, with mean semantic scores
+> of 0.893 versus 0.320. The separation persisted with and without visible
+> labels. Agentic mean provider latency was 34.3% higher and mean total-token
+> usage was 3.67× static. Both modes failed the combined-hard condition in all
+> three repetitions. These synthetic results do not establish universal or
+> real-world video-understanding gains.

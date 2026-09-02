@@ -2,11 +2,28 @@
 
 A reproducible, paired evaluation of **static** versus **agentic** video processing. The harness runs the same model, video, prompt, and thinking configuration in both modes and records quality, input-token use, latency, strategy traces, and failure modes.
 
-> Keep this repository and all EAP details, outputs, screenshots, and results private until the program owner explicitly lifts confidentiality.
+Agentic video understanding is now available through the public Gemini API. Historical EAP artifacts and private service traces should still be reviewed before publication.
 
 ## Core question
 
 Does query-adaptive video inspection preserve or improve answer quality while using fewer input tokens—and when does its chosen viewing strategy fail?
+
+## Phase 4 headline result
+
+On eight registered deterministic tracking ablations with three repetitions,
+Gemini 3.7 Flash agentic processing achieved **14/24 exact** responses versus
+**3/24 static**, with mean semantic scores of **0.893 versus 0.320**. The
+label/no-label pair produced the same separation, weakening the OCR-shortcut
+explanation. Native processing calls/results were observed in all 24 agentic
+attempts and none of the static attempts.
+
+This quality gain was not free: agentic mean provider latency was 34.3% higher
+and mean total-token usage was 3.67× static. Both modes failed the combined
+overlap + decoy + noise + fine-timing condition in all three repetitions. See
+[the Phase 4 methodology and results](docs/PHASE4_TRACKING_ABLATION.md) and the
+[claim ledger](showcase/CLAIMS.md) for denominators and failure analysis. The
+exact public JSONL and generated reports are versioned under
+[`results/phase4/`](results/phase4/README.md).
 
 ## Design
 
@@ -32,15 +49,13 @@ showcase/                Visual front door and historical demo suites
 
 ## Quick start
 
-The supplied notebook requires the unreleased SDK wheel below. This is the exact wheel named in the EAP materials—not a separate SDK:
+Install the public Gemini SDK through the project dependencies:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-gsutil cp gs://gemini-api-eap/VideoUnderstanding/google_genai-2.14.2-py3-none-any.whl .
-pip uninstall -y google-genai
-pip install ./google_genai-2.14.2-py3-none-any.whl
-pip install -e .
+python -m pip install --upgrade pip
+python -m pip install -e .
 cp .env.example .env
 ```
 
@@ -72,7 +87,7 @@ avu-eval report \
 
 Use `--dry-run` on `run` to inspect the full experiment matrix without calling the API.
 
-The adapter follows the supplied Colab's Interactions API request shape and usage fields. The Colab does not demonstrate a thinking-level request parameter, so the harness does not invent one. Strategy traces are captured only if an installed SDK response actually exposes them.
+The adapter uses the public Interactions API. Public model configurations use `gemini-3.7-flash`; the paired condition is selected with `processing: static` or `processing: agentic` on the video input. The harness records public processing step types and marks whether both a `processing_call` and `processing_result` were observed. It does not persist model thoughts.
 
 ## Evaluation ladder
 

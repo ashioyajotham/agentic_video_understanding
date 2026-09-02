@@ -1,5 +1,5 @@
 name: avu-rapid-crossing-showcase
-status: confidential-eap
+status: public-api
 source_evaluation:
   task: rapid-crossing-order
   primary_attempts_per_mode: 3
@@ -16,7 +16,22 @@ showcase:
     generator: src/avu_eval/synthetic.py
     export_dir: showcase/generated_canonical_phase4
     exact_render_required: true
-    claim_evidence: eligible-only-after-registered-model-run
+    claim_evidence: registered-run-complete
+    registered_result:
+      model: gemini-3.7-flash
+      sdk: google-genai-2.21.0
+      repetitions_per_mode: 3
+      attempts_per_mode: 24
+      static_exact: 3
+      agentic_exact: 14
+      static_mean_semantic: 0.320
+      agentic_mean_semantic: 0.893
+      static_mean_provider_latency_seconds: 11.452
+      agentic_mean_provider_latency_seconds: 15.376
+      static_mean_total_tokens: 2470.375
+      agentic_mean_total_tokens: 9071.250
+      agentic_processing_observed: 24
+      combined_hard_exact_per_mode: 0
   demo_suite:
     spec: showcase/rapid_crossing/variants_hard.json
     generator: showcase/rapid_crossing/generate_variants.py
@@ -37,9 +52,9 @@ validation:
   counterbalance: true
   primary_and_diagnostic_runs_separate: true
 release:
-  embargo: until-explicitly-lifted-by-google
+  feature_public_since: 2026-09-01
   public_export_required: true
-  remove_before_publication:
+  review_before_publication:
     - unreleased model identifiers
     - authorized project identifiers
     - private SDK locations

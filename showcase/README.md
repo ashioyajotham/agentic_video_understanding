@@ -4,7 +4,7 @@
 [![Google GenAI SDK](https://img.shields.io/badge/SDK-google--genai-green.svg)](https://ai.google.dev/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-> An open, reproducible demonstration and benchmark suite illustrating the power of **Agentic Video Understanding (AVU)** over traditional static single-pass video models using the **Google GenAI Interactions API**.
+> The visual front door for a reproducible static-versus-agentic video evaluation. Exact benchmark claims come from the parent `avu-eval` harness; polished showcase renders remain illustrative unless explicitly linked to a hash-verified canonical export.
 
 ---
 
@@ -13,12 +13,12 @@
 Standard multimodal AI systems process video using **Static Video Understanding**:
 When given a video, the system ingests a uniformly downsampled sequence of frames (e.g., 1 frame per second or a fixed frame budget). 
 
-* **The Static Blindspot**: If a decisive event occurs in a split second (e.g., a 0.08s crossing or photo-finish) or requires reading tiny details (like a micro-serial number or license plate) inside a long stream, uniform downsampling completely misses or blurs it.
+* **A potential static blind spot**: If a decisive event occurs briefly or requires tiny visual details inside a long stream, uniform sampling may miss or blur it. Whether that happens is task- and model-dependent and must be measured.
 * **The Agentic Paradigm (AVU)**: Rather than passively watching a downsampled stream, an **Agentic Video Understanding** system operates as an **active investigator with tool access**. It:
   1. **Scans** the overview to localize candidate time windows (*"Action detected between 00:21.0s and 00:24.0s"*).
   2. **Invokes active tools** (such as high-FPS temporal slicing via `ffmpeg`) to retrieve native-resolution, high-framerate frames for the critical window.
-  3. **Zooms into micro-regions** at 100% pixel fidelity to inspect fine details.
-  4. **Delivers ground-truth precision** with dramatic token and compute efficiency.
+  3. **Requests source-resolution frames or crops** for closer inspection of fine details.
+  4. **Returns an answer whose quality and resource use can be measured** against the paired static condition.
 
 ---
 
@@ -84,15 +84,27 @@ print(interaction.steps[-1].text)
 
 ## 🔬 Showcase Benchmark Suites
 
-This repository provides deterministic, mathematically verifiable benchmarks designed to measure and contrast Static vs. Agentic performance:
+This repository contains two deliberately separate layers:
+
+1. **Canonical benchmark:** eight deterministic Phase 4 tasks defined in
+   `../data/tasks/phase4_tracking_ablation.jsonl` and rendered by
+   `avu_eval.synthetic`. Only exact, hash-verified exports of these videos may
+   inherit Phase 4 provenance.
+2. **Visual demo:** the seeded 960×540 generators under `rapid_crossing/`.
+   These are useful for presentation and exploratory testing, but they are not
+   interchangeable with the canonical 640×360 benchmark.
 
 ```text
-agentic_video_understanding/
+avu-eval/
+├── data/tasks/phase4_tracking_ablation.jsonl  # canonical task definitions
+├── src/avu_eval/synthetic.py                  # canonical renderer + guardrails
+├── artifacts/                                 # canonical runs and reports
+└── showcase/
 ├── rapid_crossing/
 │   ├── generate_variants.py         # Suite A: 8s Fine-Motion generator
 │   ├── generate_needle_variants.py  # Suite B: 60-90s Needle-in-a-Haystack generator
 │   ├── needle_variants.json         # Needle benchmark spec (micro-IDs, ambient decoys)
-│   ├── variants_hard.json           # Stress test spec (0.08s gaps, variable speeds, no labels)
+│   ├── variants_hard.json           # demo-only 960×540 stress spec
 │   ├── tools/
 │   │   └── video_tools.py           # High-FPS frame extraction and spatial crop tools
 │   ├── agentic_runner.py            # Multi-turn agent loop with active tool calling
@@ -102,21 +114,33 @@ agentic_video_understanding/
 │   └── score_needle.py              # Scorer for Suite B (evaluates sequence + micro-IDs)
 ├── assets/                          # Standard registered test clips
 ├── generated_needle/                # 60s-90s Needle benchmark clips & results
-├── generated_hard/                  # Stress-test clips & results
+├── generated_hard/                  # historical demo-suite clips & results
+├── generated_canonical_phase4/      # exact canonical exports + hashes
 └── tests/
     └── test_showcase.py             # Determinism and parser unit tests
 ```
 
 ---
 
-## 📊 Benchmark Results
+## 📊 Evidence status
 
-### Suite A: Fine-Grained Temporal Precision (8-second clips)
-Tests sub-tenth-second crossing resolution, non-uniform speeds, and zero text labels:
+### Canonical Phase 4 tracking ablation
 
-* **0.08s Gap Resolution (~2.4 frames)**: **100% Sequence Accuracy**.
-* **Zero Text Labels**: **100% Exact**. Proves the model performs genuine visual color-space tracking rather than OCR.
-* **Variable Speeds (7 objects)**: **100% Exact Sequence Fidelity**.
+The eight-task suite and its generator validations are complete, including the
+matched label/no-label control, minimum two-frame crossing gaps, explicit
+decoys, bidirectional motion, controlled overlap, and ground-truth checks.
+
+**Model-result status: not yet measured.** Passing validation and unit tests
+establishes stimulus integrity, not model accuracy.
+
+### Historical 960×540 showcase suites
+
+- Registered short controls: static 15/15 exact; agentic 15/15 exact.
+- No-label hard control: static 2/2 exact; agentic 2/2 exact.
+- Full hard suite: static 2/10 exact; agentic 2/10 exact.
+
+The hard-suite result exposes failures in both modes; it does not support a
+general agentic-over-static claim.
 
 ---
 
@@ -143,12 +167,13 @@ Agentic Tool-Loop Accuracy  : 3/3 (100.0%) [100% Exact Sequence + IDs]
 
 ### 1. Clone & Setup Environment
 ```bash
-git clone https://github.com/ashioyajotham/agentic_video_understanding.git
-cd agentic_video_understanding
+git clone YOUR_PRIVATE_REPOSITORY_URL avu-eval
+cd avu-eval
 
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements-showcase.txt google-genai
+pip install -e .
+pip install -r showcase/requirements-showcase.txt
 ```
 
 ### 2. Configure API Credentials
@@ -157,28 +182,30 @@ cp .env.example .env
 # Edit .env and set your GEMINI_API_KEY
 ```
 
-### 3. Generate Benchmark Videos
+### 3. Export the exact canonical Phase 4 videos
 ```bash
-# Generate 60s-90s Needle-in-a-Haystack clips
-python rapid_crossing/generate_needle_variants.py \
-  --spec rapid_crossing/needle_variants.json \
-  --output-dir generated_needle
+avu-eval showcase-export \
+  --suite data/tasks/phase4_tracking_ablation.jsonl \
+  --output showcase/generated_canonical_phase4
+
+avu-eval showcase-verify \
+  --suite data/tasks/phase4_tracking_ablation.jsonl \
+  --input showcase/generated_canonical_phase4
 ```
 
-### 4. Run the Benchmarks
+### 4. Run the canonical benchmark
 ```bash
-# Run Static Single-Pass Baseline
-export $(cat .env | xargs) && python rapid_crossing/static_runner.py
-
-# Run Agentic Multi-Turn Tool Loop
-export $(cat .env | xargs) && PYTHONPATH=. python rapid_crossing/agentic_runner.py
+avu-eval run \
+  --suite data/tasks/phase4_tracking_ablation.jsonl \
+  --config YOUR_REGISTERED_CONFIG.yaml \
+  --output artifacts/runs/phase4-tracking-ablation.jsonl
 ```
 
-### 5. Evaluate Accuracy
+### 5. Generate the report
 ```bash
-python rapid_crossing/score_needle.py \
-  --results generated_needle/agentic_results.jsonl \
-  --truth-dir generated_needle/ground_truth
+avu-eval report \
+  --input artifacts/runs/phase4-tracking-ablation.jsonl \
+  --output artifacts/reports/phase4-tracking-ablation
 ```
 
 ---
@@ -187,6 +214,7 @@ python rapid_crossing/score_needle.py \
 
 See [CLAIMS.md](CLAIMS.md) for full protocol qualifiers.
 
-1. **Exactness across variants**: Agentic tool loops achieve 100% exactness across varied seeds, trajectories, and micro-IDs.
-2. **Temporal Grounding**: Model resolves chronological crossing order without relying on fixed color heuristics or spatial cues.
-3. **Tool-Assisted Superiority**: On long video streams with micro-details, active frame slicing delivers higher accuracy than static single-pass processing.
+1. **Short registered controls saturated:** both modes achieved 15/15 exact.
+2. **Historical hard-suite failures are preserved:** both modes achieved 2/10 exact.
+3. **Long needle illustration:** static achieved 2/3 full exact versus agentic 3/3 on a small synthetic suite.
+4. **Canonical Phase 4:** stimuli validated; model performance not yet measured.

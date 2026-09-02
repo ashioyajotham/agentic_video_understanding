@@ -2,6 +2,19 @@
 
 This ledger prevents launch copy from getting ahead of the evidence.
 
+## Evidence boundary after repository integration
+
+| Artifact | Role | Claim eligibility |
+|---|---|---|
+| `data/tasks/phase4_tracking_ablation.jsonl` rendered by `avu_eval.synthetic` | Canonical eight-task ablation benchmark | Eligible only after registered model runs on the exact exported bytes. |
+| `showcase/generated_canonical_phase4/` | Hash-verified copies of canonical stimuli and ground truth | Inherits Phase 4 provenance; the export itself contains no model result. |
+| `showcase/rapid_crossing/variants_hard.json` rendered at 960×540 | Seeded visual demo and historical exploratory suite | Demo-specific results only; never relabel as Phase 4 evidence. |
+| `showcase/generated_hard/` | Historical showcase outputs | Preserve with original denominators and failures. |
+
+Changing resolution, renderer, trajectories, labels, or encoding creates a new
+stimulus. Results do not transfer between the 960×540 showcase and the 640×360
+canonical benchmark merely because their concepts map to one another.
+
 ## Observed in the original controlled evaluation
 
 | Claim | Status | Required qualifier |
@@ -30,6 +43,13 @@ This ledger prevents launch copy from getting ahead of the evidence.
 | Agentic outperforms static across the variant family. | Not supported by the short/hard showcase suites | Supported only by the long needle suite in this repo; broader claims require the parent eval harness. |
 | The latency trade-off is acceptable for fine-motion queries. | Not established here | Report latency distributions from the parent harness or add telemetry to this showcase. |
 
+## Phase 4 status
+
+The canonical Phase 4 suite contains eight validated tasks and a matched
+label/no-label control. Generator validation and unit tests establish stimulus
+integrity; they do **not** establish model performance. Until registered calls
+are completed and scored, its model-result status is **not yet measured**.
+
 ## Explicitly prohibited claims
 
 - “Agentic video understanding is always more accurate.”
@@ -37,6 +57,8 @@ This ledger prevents launch copy from getting ahead of the evidence.
 - “The system generalizes to real-world video” from this synthetic suite alone.
 - “The benchmark proves production readiness.”
 - “Hard variants were solved at 100% exactness.”
+- “Phase 4 achieved X%” when X was measured on the separate 960×540 demo renderer.
+- “Removing labels proves identity tracking” without reporting the paired labeled control.
 - “The model resolves sub-frame ordering.”
 - Any claim based on a cherry-picked successful seed while omitting registered
   variants, timeouts, retries, or failures.

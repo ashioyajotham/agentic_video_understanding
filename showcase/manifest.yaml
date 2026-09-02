@@ -10,11 +10,24 @@ source_evaluation:
   evidence_policy: reference-parent-artifacts-do-not-copy-or-rewrite
 showcase:
   semantic_task: recover the order in which colored objects cross the reference line
-  variants_spec: rapid_crossing/variants.json
   prompt: rapid_crossing/prompt.txt
-  ground_truth_dir: assets/ground_truth
-  clips_dir: assets/clips
-  results_dir: generated
+  canonical_benchmark:
+    suite: data/tasks/phase4_tracking_ablation.jsonl
+    generator: src/avu_eval/synthetic.py
+    export_dir: showcase/generated_canonical_phase4
+    exact_render_required: true
+    claim_evidence: eligible-only-after-registered-model-run
+  demo_suite:
+    spec: showcase/rapid_crossing/variants_hard.json
+    generator: showcase/rapid_crossing/generate_variants.py
+    render: 960x540-stochastic-seeded
+    claim_evidence: false
+    purpose: visual-demonstration-and-exploration
+  historical_results:
+    registered_controls: showcase/generated
+    hard_suite: showcase/generated_hard
+    needle_suite: showcase/generated_needle
+    mutation_policy: preserve-do-not-relabel-as-phase4
 validation:
   repetitions_per_mode: 3
   modes:
@@ -31,4 +44,3 @@ release:
     - authorized project identifiers
     - private SDK locations
     - raw confidential service traces
-

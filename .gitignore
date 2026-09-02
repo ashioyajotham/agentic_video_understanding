@@ -11,7 +11,7 @@ __pycache__/
 artifacts/videos/*.mp4
 artifacts/runs/*.jsonl
 artifacts/reports/*
+showcase/generated_canonical_phase4/
 !artifacts/videos/.gitkeep
 !artifacts/runs/.gitkeep
 !artifacts/reports/.gitkeep
-

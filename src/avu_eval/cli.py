@@ -7,6 +7,7 @@ import yaml
 from .report import build
 from .runner import run
 from .schema import load_tasks
+from .showcase import export_showcase, verify_showcase
 from .synthetic import ensure_ffmpeg, generate_task_video, validate_generator_spec
 
 
@@ -21,6 +22,11 @@ def parser() -> argparse.ArgumentParser:
     cmd.add_argument("--output", required=True); cmd.add_argument("--dry-run", action="store_true")
     cmd = commands.add_parser("report")
     cmd.add_argument("--input", required=True); cmd.add_argument("--output", required=True)
+    cmd = commands.add_parser("showcase-export")
+    cmd.add_argument("--suite", required=True); cmd.add_argument("--output", required=True)
+    cmd.add_argument("--skip-generate", action="store_true")
+    cmd = commands.add_parser("showcase-verify")
+    cmd.add_argument("--suite", required=True); cmd.add_argument("--input", required=True)
     return root
 
 
@@ -47,6 +53,19 @@ def main(argv=None) -> int:
         return run(tasks, config, cwd, Path(args.output), args.dry_run)
     if args.command == "report":
         build(Path(args.input), Path(args.output)); return 0
+    if args.command == "showcase-export":
+        if not args.skip_generate:
+            ensure_ffmpeg()
+        result = export_showcase(
+            root=cwd, suite_path=Path(args.suite), output_dir=Path(args.output),
+            generate=not args.skip_generate,
+        )
+        print(f"Exported {result['task_count']} canonical tasks across {result['unique_video_count']} exact videos")
+        return 0
+    if args.command == "showcase-verify":
+        result = verify_showcase(root=cwd, suite_path=Path(args.suite), input_dir=Path(args.input))
+        print(f"Verified {result['tasks']} canonical tasks across {result['videos']} exact videos")
+        return 0
     return 2
 
 

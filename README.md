@@ -27,6 +27,7 @@ artifacts/videos/        Generated/local videos (gitignored)
 artifacts/runs/          Raw JSONL observations (gitignored)
 artifacts/reports/       Aggregate CSV/Markdown reports (gitignored)
 tests/                   Offline unit tests
+showcase/                Visual front door and historical demo suites
 ```
 
 ## Quick start
@@ -84,6 +85,25 @@ The adapter follows the supplied Colab's Interactions API request shape and usag
 7. Adversarial negatives: expected-but-absent events and false premises.
 
 See [docs/METHODOLOGY.md](docs/METHODOLOGY.md) for hypotheses and grading rules.
+
+## Showcase and canonical Phase 4 export
+
+The showcase is integrated as a visual front door, not a second source of
+benchmark truth. Its seeded 960×540 generators remain demo-specific. Export
+exact canonical Phase 4 renders—with task, suite, and video hashes—using:
+
+```bash
+avu-eval showcase-export \
+  --suite data/tasks/phase4_tracking_ablation.jsonl \
+  --output showcase/generated_canonical_phase4
+
+avu-eval showcase-verify \
+  --suite data/tasks/phase4_tracking_ablation.jsonl \
+  --input showcase/generated_canonical_phase4
+```
+
+See `showcase/CLAIMS.md` for the evidence boundary. A conceptual mapping between
+a demo variant and a Phase 4 task does not transfer results across renderers.
 
 ## Phase 2 priority run
 

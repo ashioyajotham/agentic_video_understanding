@@ -1,192 +1,134 @@
-# Agentic Video Understanding (AVU) Showcase
+# Agentic Video Understanding Eval
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Google GenAI SDK](https://img.shields.io/badge/SDK-google--genai-green.svg)](https://ai.google.dev/)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+A reproducible, paired evaluation of **static** versus **agentic** video processing. The harness runs the same model, video, prompt, and thinking configuration in both modes and records quality, input-token use, latency, strategy traces, and failure modes.
 
-> An open, reproducible demonstration and benchmark suite illustrating the power of **Agentic Video Understanding (AVU)** over traditional static single-pass video models using the **Google GenAI Interactions API**.
+Agentic video understanding is now available through the public Gemini API. Historical EAP artifacts and private service traces should still be reviewed before publication.
 
----
+## Core question
 
-## 🌟 What is Agentic Video Understanding?
+Does query-adaptive video inspection preserve or improve answer quality while using fewer input tokens—and when does its chosen viewing strategy fail?
 
-Standard multimodal AI systems process video using **Static Video Understanding**:
-When given a video, the system ingests a uniformly downsampled sequence of frames (e.g., 1 frame per second or a fixed frame budget). 
+## Phase 4 headline result
 
-* **The Static Blindspot**: If a decisive event occurs in a split second (e.g., a 0.08s crossing or photo-finish) or requires reading tiny details (like a micro-serial number or license plate) inside a long stream, uniform downsampling completely misses or blurs it.
-* **The Agentic Paradigm (AVU)**: Rather than passively watching a downsampled stream, an **Agentic Video Understanding** system operates as an **active investigator with tool access**. It:
-  1. **Scans** the overview to localize candidate time windows (*"Action detected between 00:21.0s and 00:24.0s"*).
-  2. **Invokes active tools** (such as high-FPS temporal slicing via `ffmpeg`) to retrieve native-resolution, high-framerate frames for the critical window.
-  3. **Zooms into micro-regions** at 100% pixel fidelity to inspect fine details.
-  4. **Delivers ground-truth precision** with dramatic token and compute efficiency.
+On eight registered deterministic tracking ablations with three repetitions,
+Gemini 3.7 Flash agentic processing achieved **14/24 exact** responses versus
+**3/24 static**, with mean semantic scores of **0.893 versus 0.320**. The
+label/no-label pair produced the same separation, weakening the OCR-shortcut
+explanation. Native processing calls/results were observed in all 24 agentic
+attempts and none of the static attempts.
 
----
+This quality gain was not free: agentic mean provider latency was 34.3% higher
+and mean total-token usage was 3.67× static. Both modes failed the combined
+overlap + decoy + noise + fine-timing condition in all three repetitions. See
+[the Phase 4 methodology and results](docs/PHASE4_TRACKING_ABLATION.md) and the
+[claim ledger](showcase/CLAIMS.md) for denominators and failure analysis. The
+exact public JSONL and generated reports are versioned under
+[`results/phase4/`](results/phase4/README.md).
 
-## 🛠️ The Technology: Gemini Interactions API
+## Design
 
-This showcase utilizes the **Gemini Interactions API** from the `google-genai` Python SDK. The Interactions API provides a unified, stateful interface designed for complex agentic loops, native tool calling, and multimodal reasoning.
+- **Paired conditions:** `static` and `agentic` for every case.
+- **Controlled synthetic tests:** exact event times and state transitions enable deterministic grading.
+- **Natural-video tests:** transcript-heavy, sparse-event, and long-form cases test ecological validity.
+- **Strategy auditing:** retain surfaced processing traces to diagnose missed windows, needless rescans, and transcript failures.
+- **Repeated runs:** separate systematic capability gaps from stochastic variance.
 
-### How Video Understanding Works in the Interactions API
-
-Under the Gemini Interactions API, video understanding follows an interleaved content model:
-1. Videos are uploaded via `client.files.upload()`.
-2. The uploaded file URI is passed as a structured content object `{"type": "video", "uri": uploaded.uri, "mime_type": "video/mp4"}` directly into `client.interactions.create()`.
-3. The model can utilize tools (Google Search, Python functions, frame extraction) and multi-step reasoning (`thinking_level`) to solve multi-stage video queries.
-
-### Quick Example: Calling Video Understanding via SDK
-
-```python
-import os
-import time
-from google import genai
-
-# 1. Initialize client
-client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
-
-# 2. Upload video asset
-video_file = client.files.upload(
-    file="path/to/video.mp4", 
-    config={"mime_type": "video/mp4"}
-)
-
-# 3. Query using the Interactions API
-interaction = client.interactions.create(
-    model="gemini-3.7-flash",  # or models/gemini-3.6-flash-video-understanding-eap
-    input=[
-        {"type": "video", "uri": video_file.uri, "mime_type": "video/mp4"},
-        {"type": "text", "text": "Identify the exact timestamps where objects cross the center reference line."}
-    ],
-    tools=[{"type": "google_search"}],
-    generation_config={
-        "max_output_tokens": 65536,
-        "thinking_level": "medium"
-    }
-)
-
-# 4. Extract model response
-print(interaction.steps[-1].text)
-```
-
-> **Official SDK Reference**: For complete API documentation, visit the [Google AI for Developers](https://ai.google.dev/) portal.
-
----
-
-## 🎯 Poised Real-World Use Cases
-
-| Industry | The Static AI Challenge | The Agentic (AVU) Advantage |
-|---|---|---|
-| **Security & Surveillance Forensics** | Sifting through hours of CCTV footage misses a 2-second license plate or suspect crossing. | Agent scans for motion anomalies, triggers a high-FPS zoom crop on the vehicle, and extracts the plate digits. |
-| **Sports Adjudication & VAR** | Millisecond photo-finishes or rapid ball deflections blur across uniform frame sampling. | Agent identifies the play window, pulls 60 FPS sub-second crops, and accurately determines the winner. |
-| **Industrial QC & Robotics** | High-speed conveyor belts produce micro-defects that appear for only a fraction of a second. | Agent monitors overall cadence, inspects high-speed frame bursts on anomalies, and logs defect serial IDs. |
-| **Medical & Surgical Analysis** | Long procedure recordings contain critical tool handoffs and phase transitions requiring sub-second tracking. | Agent navigates surgical phases, zooming into high-resolution operative windows without exceeding context limits. |
-
----
-
-## 🔬 Showcase Benchmark Suites
-
-This repository provides deterministic, mathematically verifiable benchmarks designed to measure and contrast Static vs. Agentic performance:
+## Repository map
 
 ```text
-agentic_video_understanding/
-├── rapid_crossing/
-│   ├── generate_variants.py         # Suite A: 8s Fine-Motion generator
-│   ├── generate_needle_variants.py  # Suite B: 60-90s Needle-in-a-Haystack generator
-│   ├── needle_variants.json         # Needle benchmark spec (micro-IDs, ambient decoys)
-│   ├── variants_hard.json           # Stress test spec (0.08s gaps, variable speeds, no labels)
-│   ├── tools/
-│   │   └── video_tools.py           # High-FPS frame extraction and spatial crop tools
-│   ├── agentic_runner.py            # Multi-turn agent loop with active tool calling
-│   ├── static_runner.py             # Single-pass static baseline runner
-│   ├── run_demo.py                  # Standard CLI test harness
-│   ├── score_results.py             # Scorer for Suite A
-│   └── score_needle.py              # Scorer for Suite B (evaluates sequence + micro-IDs)
-├── assets/                          # Standard registered test clips
-├── generated_needle/                # 60s-90s Needle benchmark clips & results
-├── generated_hard/                  # Stress-test clips & results
-└── tests/
-    └── test_showcase.py             # Determinism and parser unit tests
+configs/                 Experiment configuration
+data/tasks/              Versioned JSONL task manifests
+docs/                    Methodology, references, feedback template
+src/avu_eval/            Generator, runner, graders, reporting
+artifacts/videos/        Generated/local videos (gitignored)
+artifacts/runs/          Raw JSONL observations (gitignored)
+artifacts/reports/       Aggregate CSV/Markdown reports (gitignored)
+tests/                   Offline unit tests
+showcase/                Visual front door and historical demo suites
 ```
 
----
+## Quick start
 
-## 📊 Benchmark Results
+Install the public Gemini SDK through the project dependencies:
 
-### Suite A: Fine-Grained Temporal Precision (8-second clips)
-Tests sub-tenth-second crossing resolution, non-uniform speeds, and zero text labels:
-
-* **0.08s Gap Resolution (~2.4 frames)**: **100% Sequence Accuracy**.
-* **Zero Text Labels**: **100% Exact**. Proves the model performs genuine visual color-space tracking rather than OCR.
-* **Variable Speeds (7 objects)**: **100% Exact Sequence Fidelity**.
-
----
-
-### Suite B: Long-Duration Needle-in-a-Haystack (60s–90s clips + Micro-IDs)
-Evaluates why an **Agentic Tool Loop** is necessary over long, dense video streams:
-
-```
-=====================================================================
-            NEEDLE-IN-A-HAYSTACK AVU SHOWCASE BENCHMARK              
-=====================================================================
-Static Single-Pass Accuracy : 2/3 (66.7%)  [Failed on sub-second ordering]
-Agentic Tool-Loop Accuracy  : 3/3 (100.0%) [100% Exact Sequence + IDs]
-=====================================================================
-```
-
-#### The Discriminative Case: `needle_event_22s.mp4` (60s HD)
-* **Ground Truth**: `Blue #74` $\rightarrow$ `Magenta #97` $\rightarrow$ `Yellow #54` $\rightarrow$ `Orange #48` $\rightarrow$ `Cyan #31`
-* **Static Single Pass**: ❌ **FAILED** — Swapped `Magenta #97` before `Blue #74` because uniform downsampling across the 60s stream blurred the 0.12s gap ($t=22.30\text{s}$ vs $t=22.42\text{s}$).
-* **Agentic Tool Loop**: ✅ **100% EXACT** — Step 1 localized the window to $[21.0\text{s}, 24.2\text{s}]$, Step 2 extracted 64 high-FPS frames via `ffmpeg`, and Step 3 correctly resolved `Blue #74` before `Magenta #97`.
-
----
-
-## 🚀 Quick Start
-
-### 1. Clone & Setup Environment
 ```bash
-git clone https://github.com/ashioyajotham/agentic_video_understanding.git
-cd agentic_video_understanding
-
-python3 -m venv .venv
+python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements-showcase.txt google-genai
-```
-
-### 2. Configure API Credentials
-```bash
+python -m pip install --upgrade pip
+python -m pip install -e .
 cp .env.example .env
-# Edit .env and set your GEMINI_API_KEY
 ```
 
-### 3. Generate Benchmark Videos
+Put only `GEMINI_API_KEY=...` in `.env`, or set that variable in the active shell. This harness does not enable Vertex AI.
+
+Generate deterministic synthetic videos and validate their manifests:
+
 ```bash
-# Generate 60s-90s Needle-in-a-Haystack clips
-python rapid_crossing/generate_needle_variants.py \
-  --spec rapid_crossing/needle_variants.json \
-  --output-dir generated_needle
+avu-eval generate --suite data/tasks/synthetic_core.jsonl
+avu-eval validate --suite data/tasks/synthetic_core.jsonl
 ```
 
-### 4. Run the Benchmarks
+Run the paired experiment:
+
 ```bash
-# Run Static Single-Pass Baseline
-export $(cat .env | xargs) && python rapid_crossing/static_runner.py
-
-# Run Agentic Multi-Turn Tool Loop
-export $(cat .env | xargs) && PYTHONPATH=. python rapid_crossing/agentic_runner.py
+avu-eval run \
+  --suite data/tasks/synthetic_core.jsonl \
+  --config configs/eval.yaml \
+  --output artifacts/runs/synthetic_core.jsonl
 ```
 
-### 5. Evaluate Accuracy
+Aggregate results:
+
 ```bash
-python rapid_crossing/score_needle.py \
-  --results generated_needle/agentic_results.jsonl \
-  --truth-dir generated_needle/ground_truth
+avu-eval report \
+  --input artifacts/runs/synthetic_core.jsonl \
+  --output artifacts/reports/synthetic_core
 ```
 
----
+Use `--dry-run` on `run` to inspect the full experiment matrix without calling the API.
 
-## 📜 Claims Ledger
+The adapter uses the public Interactions API. Public model configurations use `gemini-3.7-flash`; the paired condition is selected with `processing: static` or `processing: agentic` on the video input. The harness records public processing step types and marks whether both a `processing_call` and `processing_result` were observed. It does not persist model thoughts.
 
-See [CLAIMS.md](CLAIMS.md) for full protocol qualifiers.
+## Evaluation ladder
 
-1. **Exactness across variants**: Agentic tool loops achieve 100% exactness across varied seeds, trajectories, and micro-IDs.
-2. **Temporal Grounding**: Model resolves chronological crossing order without relying on fixed color heuristics or spatial cues.
-3. **Tool-Assisted Superiority**: On long video streams with micro-details, active frame slicing delivers higher accuracy than static single-pass processing.
+1. Short-video smoke tests: recognition, spatial relations, order, counting.
+2. Fine motion: brief events requiring selective high-FPS inspection.
+3. Cumulative state: the `snake_state` family tracks a progressively changing hidden state.
+4. Sparse-event search: a decisive event embedded among distractors.
+5. Transcript routing: transcript-sufficient, visual-only, and audio/visual-conflict cases.
+6. Long-form retrieval and summarization.
+7. Adversarial negatives: expected-but-absent events and false premises.
+
+See [docs/METHODOLOGY.md](docs/METHODOLOGY.md) for hypotheses and grading rules.
+
+## Showcase and canonical Phase 4 export
+
+The showcase is integrated as a visual front door, not a second source of
+benchmark truth. Its seeded 960×540 generators remain demo-specific. Export
+exact canonical Phase 4 renders—with task, suite, and video hashes—using:
+
+```bash
+avu-eval showcase-export \
+  --suite data/tasks/phase4_tracking_ablation.jsonl \
+  --output showcase/generated_canonical_phase4
+
+avu-eval showcase-verify \
+  --suite data/tasks/phase4_tracking_ablation.jsonl \
+  --input showcase/generated_canonical_phase4
+```
+
+See `showcase/CLAIMS.md` for the evidence boundary. A conceptual mapping between
+a demo variant and a Phase 4 task does not transfer results across renderers.
+
+## Phase 2 priority run
+
+Phase 2 moves beyond the saturated short-video baseline. It adds reversible state, incomplete-action negatives, a sub-second event hidden in five minutes, timestamp localization, and a five-event order compressed into under one second.
+
+```bash
+avu-eval generate --suite data/tasks/phase2_priority.jsonl
+avu-eval validate --suite data/tasks/phase2_priority.jsonl
+avu-eval run --suite data/tasks/phase2_priority.jsonl --config configs/phase2_priority.yaml --output artifacts/runs/phase2-priority.jsonl
+avu-eval report --input artifacts/runs/phase2-priority.jsonl --output artifacts/reports/phase2-priority
+```
+
+The priority matrix is 36 attempts. Videos are uploaded before request timing, condition order is counterbalanced, each attempt has a hard timeout, timeouts are written as results, and rerunning the same command resumes missing jobs instead of duplicating completed rows. See [docs/PHASE2.md](docs/PHASE2.md).

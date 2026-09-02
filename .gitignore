@@ -1,20 +1,17 @@
-# Secrets & Local Environment
 .env
-.env.*
-!.env.example
-
-# Python
+.gcloud-config/
+.pip-temp/
+.pip-cache/
+.venv*/
+google_genai-*.whl
 .venv/
-venv/
 __pycache__/
-*.py[cod]
-*$py.class
-.pytest_cache/
-
-# OS / Editor
-.DS_Store
-.vscode/
-.idea/
-
-# Scratch & Temporary Logs
-*.log
+*.pyc
+*.egg-info/
+artifacts/videos/*.mp4
+artifacts/runs/*.jsonl
+artifacts/reports/*
+showcase/generated_canonical_phase4/
+!artifacts/videos/.gitkeep
+!artifacts/runs/.gitkeep
+!artifacts/reports/.gitkeep

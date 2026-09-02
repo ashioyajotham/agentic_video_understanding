@@ -7,7 +7,7 @@ import yaml
 from .report import build
 from .runner import run
 from .schema import load_tasks
-from .synthetic import ensure_ffmpeg, generate_task_video
+from .synthetic import ensure_ffmpeg, generate_task_video, validate_generator_spec
 
 
 def parser() -> argparse.ArgumentParser:
@@ -29,6 +29,8 @@ def main(argv=None) -> int:
     cwd = Path.cwd()
     if args.command == "validate":
         tasks = load_tasks(args.suite)
+        for task in tasks:
+            validate_generator_spec(task)
         print(f"Validated {len(tasks)} unique tasks")
         return 0
     if args.command == "generate":

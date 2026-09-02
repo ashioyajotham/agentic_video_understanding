@@ -12,7 +12,16 @@ from .schema import Task
 
 
 WIDTH, HEIGHT, FPS = 960, 540, 12
-COLORS = {"red": "#dc3545", "blue": "#2474ff", "green": "#23a455", "yellow": "#f2c94c", "purple": "#8844cc"}
+COLORS = {
+    "red": "#dc3545",
+    "orange": "#ed6a2c",
+    "magenta": "#cf3f8f",
+    "blue": "#2474ff",
+    "green": "#23a455",
+    "yellow": "#f2c94c",
+    "purple": "#8844cc",
+    "cyan": "#24a9b8",
+}
 
 
 def _font(size: int):
@@ -61,10 +70,12 @@ def _render_snake(output: Path, spec: dict) -> None:
 
 def _stream_video(output: Path, duration: float, fps: int, frame_fn: Callable[[float], Image.Image], size=(640, 360)) -> None:
     """Stream frames directly into ffmpeg so multi-minute stimuli do not fill disk."""
+    staging = output.with_name(f".{output.stem}.rendering{output.suffix}")
+    staging.unlink(missing_ok=True)
     process = subprocess.Popen([
         "ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24",
         "-s", f"{size[0]}x{size[1]}", "-r", str(fps), "-i", "-", "-an",
-        "-c:v", "libx264", "-preset", "veryfast", "-crf", "23", "-pix_fmt", "yuv420p", str(output),
+        "-c:v", "libx264", "-preset", "veryfast", "-crf", "23", "-pix_fmt", "yuv420p", str(staging),
     ], stdin=subprocess.PIPE)
     assert process.stdin is not None
     try:
@@ -73,7 +84,20 @@ def _stream_video(output: Path, duration: float, fps: int, frame_fn: Callable[[f
     finally:
         process.stdin.close()
     if process.wait() != 0:
+        staging.unlink(missing_ok=True)
         raise RuntimeError(f"ffmpeg failed while creating {output}")
+    probe = subprocess.run([
+        "ffprobe", "-v", "error", "-show_entries", "format=duration",
+        "-of", "default=noprint_wrappers=1:nokey=1", str(staging),
+    ], capture_output=True, text=True)
+    try:
+        rendered_duration = float(probe.stdout.strip())
+    except ValueError:
+        rendered_duration = 0.0
+    if probe.returncode != 0 or rendered_duration < duration - (1 / fps):
+        staging.unlink(missing_ok=True)
+        raise RuntimeError(f"ffmpeg produced an invalid or incomplete video for {output}")
+    staging.replace(output)
 
 
 def _ledger_frame(t: float, spec: dict) -> Image.Image:
@@ -132,18 +156,74 @@ def _render_sparse_needle(output: Path, spec: dict) -> None:
     _stream_video(output, duration, fps, lambda t: _needle_frame(t, spec))
 
 
+def _rapid_event_y(event: dict, index: int, count: int, overlap: bool) -> int:
+    if "y" in event:
+        return int(event["y"])
+    if overlap:
+        # Controlled convergence prevents lane identity from being a shortcut while
+        # retaining a small vertical offset so the stimulus remains recoverable.
+        offsets = (-12, 0, 12, -6, 6)
+        return 180 + offsets[index % len(offsets)]
+    if count <= 1:
+        return 180
+    return int(65 + index * (230 / (count - 1)))
+
+
+def _draw_rapid_background(draw: ImageDraw.ImageDraw, t: float, noise: str) -> None:
+    if noise not in {"grid", "moving_grid"}:
+        return
+    offset = int((t * 18) % 40) if noise == "moving_grid" else 0
+    for x in range(-40 + offset, 681, 40):
+        draw.line((x, 0, x, 360), fill="#d9dde2", width=1)
+    for y in range(0, 361, 40):
+        draw.line((0, y, 640, y), fill="#d9dde2", width=1)
+
+
+def _rapid_x(t: float, event: dict, gate_x: int, default_speed: float) -> float:
+    event_time = float(event["time"])
+    speed = float(event.get("speed", default_speed))
+    direction = event.get("direction", "ltr")
+    sign = 1 if direction == "ltr" else -1
+    dt = t - event_time
+    if event.get("crosses", True):
+        return gate_x + sign * dt * speed
+
+    # A decoy reaches its closest point at `time` and reverses without touching
+    # the gate. It always remains on its approach side.
+    closest = float(event.get("closest_offset", 10))
+    return gate_x - sign * (closest + abs(dt) * speed)
+
+
 def _rapid_frame(t: float, spec: dict) -> Image.Image:
-    image = Image.new("RGB", (640, 360), "#f7f7f7")
+    background = spec.get("background_color", "#f7f7f7")
+    image = Image.new("RGB", (640, 360), background)
     draw = ImageDraw.Draw(image)
-    gate_x = 320
+    _draw_rapid_background(draw, t, spec.get("background_noise", "none"))
+    gate_x = int(spec.get("gate_x", 320))
     draw.line((gate_x, 45, gate_x, 315), fill="#222", width=5)
-    for idx, event in enumerate(spec["events"]):
+    events = list(spec["events"])
+    radius = int(spec.get("object_radius", 16))
+    default_speed = float(spec.get("speed", 600))
+    visible_window = float(spec.get("visible_window", 0.45))
+    overlap = bool(spec.get("lane_overlap", False))
+    show_labels = bool(spec.get("show_labels", False))
+    for idx, event in enumerate(events):
         dt = t - float(event["time"])
-        if -0.14 <= dt <= 0.14:
-            x = int(gate_x + dt * 600)
-            y = 90 + idx * 45
-            draw.ellipse((x-16, y-16, x+16, y+16), fill=COLORS[event["color"]], outline="black", width=2)
-    draw.text((20, 20), "Which objects cross the gate, and in what order?", fill="#333", font=_font(20))
+        if abs(dt) <= visible_window:
+            x = int(_rapid_x(t, event, gate_x, default_speed))
+            y = _rapid_event_y(event, idx, len(events), overlap)
+            color = event["color"]
+            draw.ellipse(
+                (x-radius, y-radius, x+radius, y+radius),
+                fill=COLORS[color], outline="#111", width=max(1, radius // 6),
+            )
+            if show_labels:
+                label_font = _font(max(10, radius))
+                box = draw.textbbox((0, 0), color, font=label_font)
+                label_width = box[2] - box[0]
+                draw.text((x-label_width/2, y+radius+3), color, fill="#222", font=label_font)
+    if spec.get("show_instruction", True):
+        draw.text((20, 20), "Which objects cross the gate, and in what order?", fill="#333", font=_font(20))
     return image
 
 
@@ -152,9 +232,52 @@ def _render_rapid_order(output: Path, spec: dict) -> None:
     _stream_video(output, duration, fps, lambda t: _rapid_frame(t, spec))
 
 
+def validate_generator_spec(task: Task) -> None:
+    """Reject misleading or unobservable synthetic rapid-order tasks."""
+    spec = task.generator
+    if not spec or spec.get("type") != "rapid_order":
+        return
+    fps = int(spec.get("fps", 30))
+    if fps <= 0:
+        raise ValueError(f"{task.id}: fps must be positive")
+    radius = int(spec.get("object_radius", 16))
+    if radius < 6:
+        raise ValueError(f"{task.id}: object_radius below 6px is not reliably visible")
+    events = list(spec.get("events", []))
+    crossings = sorted((e for e in events if e.get("crosses", True)), key=lambda e: float(e["time"]))
+    if not crossings:
+        raise ValueError(f"{task.id}: rapid_order requires at least one crossing")
+    for event in events:
+        if event.get("direction", "ltr") not in {"ltr", "rtl"}:
+            raise ValueError(f"{task.id}: direction must be 'ltr' or 'rtl'")
+        if event["color"] not in COLORS:
+            raise ValueError(f"{task.id}: unknown color {event['color']!r}")
+        if float(event.get("speed", spec.get("speed", 600))) <= 0:
+            raise ValueError(f"{task.id}: speed must be positive")
+        if not event.get("crosses", True) and float(event.get("closest_offset", 10)) <= radius:
+            raise ValueError(
+                f"{task.id}: decoy closest_offset must exceed object_radius so it cannot touch the gate"
+            )
+
+    minimum_gap_frames = float(spec.get("minimum_gap_frames", 2))
+    for first, second in zip(crossings, crossings[1:]):
+        gap_frames = (float(second["time"]) - float(first["time"])) * fps
+        if gap_frames + 1e-9 < minimum_gap_frames:
+            raise ValueError(
+                f"{task.id}: crossings {first['color']}->{second['color']} are only "
+                f"{gap_frames:.2f} frames apart; require >= {minimum_gap_frames:g}"
+            )
+
+    if task.answer_type == "ordered_list":
+        derived = [event["color"] for event in crossings]
+        if task.expected != derived:
+            raise ValueError(f"{task.id}: expected order {task.expected!r} does not match rendered crossings {derived!r}")
+
+
 def generate_task_video(task: Task, root: Path) -> Path:
     if not task.generator:
         return root / task.video
+    validate_generator_spec(task)
     output = root / task.video
     output.parent.mkdir(parents=True, exist_ok=True)
     kind = task.generator.get("type")

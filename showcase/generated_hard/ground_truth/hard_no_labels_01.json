@@ -1,0 +1,89 @@
+{
+  "variant_id": "hard_no_labels_01",
+  "seed": 201,
+  "direction": "left_to_right",
+  "line_x": 532,
+  "crossing_gap_seconds": 0.15,
+  "objects": [
+    {
+      "color": "red",
+      "crossing_time": 3.01775167199229,
+      "lane_y": 373.67999999999995,
+      "amplitude": 9.150748066989117,
+      "phase": 4.368658655213643,
+      "velocity_scale": 1.0,
+      "obj_direction": 1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "orange",
+      "crossing_time": 3.16775167199229,
+      "lane_y": 235.44,
+      "amplitude": 8.888395846915378,
+      "phase": 1.881878020141705,
+      "velocity_scale": 1.0,
+      "obj_direction": 1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "cyan",
+      "crossing_time": 3.3177516719922897,
+      "lane_y": 97.2,
+      "amplitude": 9.39620168197955,
+      "phase": 1.6767890692958805,
+      "velocity_scale": 1.0,
+      "obj_direction": 1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "green",
+      "crossing_time": 3.46775167199229,
+      "lane_y": 442.8,
+      "amplitude": 8.80750397252541,
+      "phase": 4.73214710431697,
+      "velocity_scale": 1.0,
+      "obj_direction": 1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "yellow",
+      "crossing_time": 3.61775167199229,
+      "lane_y": 166.32,
+      "amplitude": 13.65548560890896,
+      "phase": 0.1911508170381067,
+      "velocity_scale": 1.0,
+      "obj_direction": 1.0,
+      "is_decoy": false
+    },
+    {
+      "color": "blue",
+      "crossing_time": 3.76775167199229,
+      "lane_y": 304.56000000000006,
+      "amplitude": 12.754909954348367,
+      "phase": 0.4907768435891317,
+      "velocity_scale": 1.0,
+      "obj_direction": 1.0,
+      "is_decoy": false
+    }
+  ],
+  "expected_order": [
+    "red",
+    "orange",
+    "cyan",
+    "green",
+    "yellow",
+    "blue"
+  ],
+  "video": {
+    "width": 960,
+    "height": 540,
+    "fps": 30,
+    "duration_seconds": 8.0,
+    "object_radius": 24
+  },
+  "background": "#111827",
+  "show_labels": false,
+  "object_radius": 18,
+  "clip": "generated_hard/clips/hard_no_labels_01.mp4",
+  "clip_sha256": "26d08e8a55a7731354c53033be36153e11d21bb97ec865ce36da8f95f8b04fe0"
+}

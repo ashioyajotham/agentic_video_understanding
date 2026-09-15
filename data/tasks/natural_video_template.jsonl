@@ -1,0 +1,3 @@
+{"id":"natural_sparse_001","family":"sparse_event","video":"artifacts/videos/REPLACE_ME.mp4","question":"REPLACE WITH A QUESTION WHOSE ANSWER REQUIRES A BRIEF VISUAL WINDOW. Include an exact response format.","answer_type":"exact","expected":"REPLACE_ME","tags":["natural-video","sparse-event"],"rationale":"Tests scan-and-focus on a decisive event surrounded by irrelevant content."}
+{"id":"natural_transcript_001","family":"transcript_sufficient","video":"artifacts/videos/REPLACE_ME.mp4","question":"REPLACE WITH A QUESTION ANSWERABLE ENTIRELY FROM SPEECH.","answer_type":"contains","expected":["REPLACE_ME"],"tags":["natural-video","transcript"],"rationale":"Tests transcript-first routing and token efficiency."}
+

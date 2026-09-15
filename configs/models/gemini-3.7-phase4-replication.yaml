@@ -1,0 +1,7 @@
+model: gemini-3.7-flash
+processing_modes: [static, agentic]
+repetitions: 3
+timeout_seconds: 180
+poll_seconds: 10
+order_strategy: counterbalanced
+resume: true

@@ -1,0 +1,65 @@
+{
+  "video": {
+    "width": 960,
+    "height": 540,
+    "fps": 30,
+    "duration_seconds": 8.0,
+    "object_radius": 24
+  },
+  "variants": [
+    {
+      "id": "hard_no_labels_01",
+      "seed": 201,
+      "object_count": 6,
+      "direction": "left_to_right",
+      "crossing_gap_seconds": 0.15,
+      "background": "#111827",
+      "show_labels": false,
+      "object_radius": 18
+    },
+    {
+      "id": "hard_tight_gap_02",
+      "seed": 202,
+      "object_count": 6,
+      "direction": "right_to_left",
+      "crossing_gap_seconds": 0.08,
+      "background": "#172554",
+      "show_labels": false,
+      "object_radius": 16
+    },
+    {
+      "id": "hard_overlap_lanes_03",
+      "seed": 203,
+      "object_count": 6,
+      "direction": "left_to_right",
+      "crossing_gap_seconds": 0.10,
+      "background": "#1f2937",
+      "show_labels": false,
+      "object_radius": 16,
+      "lane_overlap": true
+    },
+    {
+      "id": "hard_variable_speed_04",
+      "seed": 204,
+      "object_count": 7,
+      "direction": "right_to_left",
+      "crossing_gap_seconds": 0.10,
+      "background": "#0f172a",
+      "show_labels": false,
+      "object_radius": 14,
+      "variable_speed": true
+    },
+    {
+      "id": "hard_decoys_bidirectional_05",
+      "seed": 205,
+      "object_count": 6,
+      "direction": "left_to_right",
+      "crossing_gap_seconds": 0.10,
+      "background": "#27272a",
+      "show_labels": false,
+      "object_radius": 15,
+      "bidirectional": true,
+      "decoy_count": 2
+    }
+  ]
+}

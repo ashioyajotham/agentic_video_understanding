@@ -1,0 +1,362 @@
+{
+  "attempts": 15,
+  "completed": 15,
+  "exact": 15,
+  "exact_rate": 1.0,
+  "per_variant": {
+    "crossing_seed_011": {
+      "attempts": 3,
+      "exact": 3,
+      "exact_rate": 1.0
+    },
+    "crossing_seed_023": {
+      "attempts": 3,
+      "exact": 3,
+      "exact_rate": 1.0
+    },
+    "crossing_seed_047": {
+      "attempts": 3,
+      "exact": 3,
+      "exact_rate": 1.0
+    },
+    "crossing_seed_071": {
+      "attempts": 3,
+      "exact": 3,
+      "exact_rate": 1.0
+    },
+    "crossing_seed_101": {
+      "attempts": 3,
+      "exact": 3,
+      "exact_rate": 1.0
+    }
+  },
+  "rows": [
+    {
+      "variant_id": "crossing_seed_011",
+      "mode": "static",
+      "attempt": 1,
+      "expected": [
+        "orange",
+        "cyan",
+        "yellow",
+        "magenta",
+        "blue"
+      ],
+      "predicted": [
+        "orange",
+        "cyan",
+        "yellow",
+        "magenta",
+        "blue"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "crossing_seed_023",
+      "mode": "static",
+      "attempt": 1,
+      "expected": [
+        "orange",
+        "cyan",
+        "blue",
+        "magenta",
+        "red"
+      ],
+      "predicted": [
+        "orange",
+        "cyan",
+        "blue",
+        "magenta",
+        "red"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "crossing_seed_047",
+      "mode": "static",
+      "attempt": 1,
+      "expected": [
+        "green",
+        "blue",
+        "red",
+        "magenta",
+        "orange",
+        "yellow"
+      ],
+      "predicted": [
+        "green",
+        "blue",
+        "red",
+        "magenta",
+        "orange",
+        "yellow"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "crossing_seed_071",
+      "mode": "static",
+      "attempt": 1,
+      "expected": [
+        "cyan",
+        "blue",
+        "red",
+        "green",
+        "magenta"
+      ],
+      "predicted": [
+        "cyan",
+        "blue",
+        "red",
+        "green",
+        "magenta"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "crossing_seed_101",
+      "mode": "static",
+      "attempt": 1,
+      "expected": [
+        "blue",
+        "magenta",
+        "orange",
+        "green",
+        "cyan",
+        "red"
+      ],
+      "predicted": [
+        "blue",
+        "magenta",
+        "orange",
+        "green",
+        "cyan",
+        "red"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "crossing_seed_101",
+      "mode": "static",
+      "attempt": 2,
+      "expected": [
+        "blue",
+        "magenta",
+        "orange",
+        "green",
+        "cyan",
+        "red"
+      ],
+      "predicted": [
+        "blue",
+        "magenta",
+        "orange",
+        "green",
+        "cyan",
+        "red"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "crossing_seed_071",
+      "mode": "static",
+      "attempt": 2,
+      "expected": [
+        "cyan",
+        "blue",
+        "red",
+        "green",
+        "magenta"
+      ],
+      "predicted": [
+        "cyan",
+        "blue",
+        "red",
+        "green",
+        "magenta"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "crossing_seed_047",
+      "mode": "static",
+      "attempt": 2,
+      "expected": [
+        "green",
+        "blue",
+        "red",
+        "magenta",
+        "orange",
+        "yellow"
+      ],
+      "predicted": [
+        "green",
+        "blue",
+        "red",
+        "magenta",
+        "orange",
+        "yellow"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "crossing_seed_023",
+      "mode": "static",
+      "attempt": 2,
+      "expected": [
+        "orange",
+        "cyan",
+        "blue",
+        "magenta",
+        "red"
+      ],
+      "predicted": [
+        "orange",
+        "cyan",
+        "blue",
+        "magenta",
+        "red"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "crossing_seed_011",
+      "mode": "static",
+      "attempt": 2,
+      "expected": [
+        "orange",
+        "cyan",
+        "yellow",
+        "magenta",
+        "blue"
+      ],
+      "predicted": [
+        "orange",
+        "cyan",
+        "yellow",
+        "magenta",
+        "blue"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "crossing_seed_011",
+      "mode": "static",
+      "attempt": 3,
+      "expected": [
+        "orange",
+        "cyan",
+        "yellow",
+        "magenta",
+        "blue"
+      ],
+      "predicted": [
+        "orange",
+        "cyan",
+        "yellow",
+        "magenta",
+        "blue"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "crossing_seed_023",
+      "mode": "static",
+      "attempt": 3,
+      "expected": [
+        "orange",
+        "cyan",
+        "blue",
+        "magenta",
+        "red"
+      ],
+      "predicted": [
+        "orange",
+        "cyan",
+        "blue",
+        "magenta",
+        "red"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "crossing_seed_047",
+      "mode": "static",
+      "attempt": 3,
+      "expected": [
+        "green",
+        "blue",
+        "red",
+        "magenta",
+        "orange",
+        "yellow"
+      ],
+      "predicted": [
+        "green",
+        "blue",
+        "red",
+        "magenta",
+        "orange",
+        "yellow"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "crossing_seed_071",
+      "mode": "static",
+      "attempt": 3,
+      "expected": [
+        "cyan",
+        "blue",
+        "red",
+        "green",
+        "magenta"
+      ],
+      "predicted": [
+        "cyan",
+        "blue",
+        "red",
+        "green",
+        "magenta"
+      ],
+      "exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "crossing_seed_101",
+      "mode": "static",
+      "attempt": 3,
+      "expected": [
+        "blue",
+        "magenta",
+        "orange",
+        "green",
+        "cyan",
+        "red"
+      ],
+      "predicted": [
+        "blue",
+        "magenta",
+        "orange",
+        "green",
+        "cyan",
+        "red"
+      ],
+      "exact": true,
+      "status": "completed"
+    }
+  ]
+}

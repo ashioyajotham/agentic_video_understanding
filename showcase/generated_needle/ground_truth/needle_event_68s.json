@@ -1,0 +1,178 @@
+{
+  "variant_id": "needle_event_68s",
+  "seed": 303,
+  "duration_seconds": 90.0,
+  "direction": "left_to_right",
+  "line_x": 640,
+  "event_start_seconds": 68.5,
+  "crossing_gap_seconds": 0.08,
+  "crossing_objects": [
+    {
+      "color": "cyan",
+      "digit_id": "33",
+      "crossing_time": 68.5,
+      "lane_y": 319.68000000000006,
+      "amplitude": 13.670693427340133,
+      "phase": 0.967566835409167,
+      "direction": 1.0
+    },
+    {
+      "color": "green",
+      "digit_id": "24",
+      "crossing_time": 68.58,
+      "lane_y": 561.6,
+      "amplitude": 7.476279118773797,
+      "phase": 3.6306598867968636,
+      "direction": 1.0
+    },
+    {
+      "color": "red",
+      "digit_id": "72",
+      "crossing_time": 68.66,
+      "lane_y": 158.4,
+      "amplitude": 6.5631778529498215,
+      "phase": 2.5821003200000354,
+      "direction": 1.0
+    },
+    {
+      "color": "orange",
+      "digit_id": "16",
+      "crossing_time": 68.74,
+      "lane_y": 400.32000000000005,
+      "amplitude": 7.692371160775565,
+      "phase": 2.8311718611239707,
+      "direction": 1.0
+    },
+    {
+      "color": "magenta",
+      "digit_id": "22",
+      "crossing_time": 68.82,
+      "lane_y": 239.04000000000002,
+      "amplitude": 8.795027762743908,
+      "phase": 2.6445800165774163,
+      "direction": 1.0
+    },
+    {
+      "color": "blue",
+      "digit_id": "67",
+      "crossing_time": 68.9,
+      "lane_y": 480.96000000000004,
+      "amplitude": 8.719969334522117,
+      "phase": 3.0149604942969135,
+      "direction": 1.0
+    }
+  ],
+  "ambient_decoys": [
+    {
+      "color": "blue",
+      "center_x": 320.0,
+      "center_y": 427.9269330051297,
+      "radius_x": 147.4791132118817,
+      "radius_y": 137.5955842514869,
+      "speed_factor": 1.6786444991630156,
+      "phase": 2.720210363118235
+    },
+    {
+      "color": "blue",
+      "center_x": 960.0,
+      "center_y": 231.06227557230216,
+      "radius_x": 184.9450930619311,
+      "radius_y": 157.32121478284157,
+      "speed_factor": 1.3394936617938638,
+      "phase": 5.456711656990784
+    },
+    {
+      "color": "green",
+      "center_x": 320.0,
+      "center_y": 376.25870442856194,
+      "radius_x": 121.74559779504003,
+      "radius_y": 151.7319134160053,
+      "speed_factor": 0.9488692223404686,
+      "phase": 5.776563847215078
+    },
+    {
+      "color": "cyan",
+      "center_x": 960.0,
+      "center_y": 290.97953459630855,
+      "radius_x": 135.92033766380396,
+      "radius_y": 120.23163824272063,
+      "speed_factor": 1.6874858986110493,
+      "phase": 1.4760055078307945
+    },
+    {
+      "color": "magenta",
+      "center_x": 320.0,
+      "center_y": 299.37872177767656,
+      "radius_x": 176.53602722337655,
+      "radius_y": 114.004253252989,
+      "speed_factor": 1.6127682269274626,
+      "phase": 1.608568881948352
+    },
+    {
+      "color": "magenta",
+      "center_x": 960.0,
+      "center_y": 288.3630197960761,
+      "radius_x": 166.69748284417076,
+      "radius_y": 135.78524428601014,
+      "speed_factor": 1.4729946383858061,
+      "phase": 1.6093005362909665
+    }
+  ],
+  "expected_order": [
+    {
+      "color": "cyan",
+      "id": "33",
+      "time": 68.5
+    },
+    {
+      "color": "green",
+      "id": "24",
+      "time": 68.58
+    },
+    {
+      "color": "red",
+      "id": "72",
+      "time": 68.66
+    },
+    {
+      "color": "orange",
+      "id": "16",
+      "time": 68.74
+    },
+    {
+      "color": "magenta",
+      "id": "22",
+      "time": 68.82
+    },
+    {
+      "color": "blue",
+      "id": "67",
+      "time": 68.9
+    }
+  ],
+  "expected_colors": [
+    "cyan",
+    "green",
+    "red",
+    "orange",
+    "magenta",
+    "blue"
+  ],
+  "expected_ids": [
+    "33",
+    "24",
+    "72",
+    "16",
+    "22",
+    "67"
+  ],
+  "video": {
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "object_radius": 22
+  },
+  "background": "#1e1b4b",
+  "clip": "generated_needle/clips/needle_event_68s.mp4",
+  "clip_sha256": "1453ee0c5ff2b483421cb9ab934c7a246b1d5908c43a6fad9f06d96c8a06606d"
+}

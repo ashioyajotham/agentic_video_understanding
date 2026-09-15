@@ -1,0 +1,169 @@
+{
+  "variant_id": "needle_event_48s",
+  "seed": 302,
+  "duration_seconds": 60.0,
+  "direction": "right_to_left",
+  "line_x": 640,
+  "event_start_seconds": 47.8,
+  "crossing_gap_seconds": 0.09,
+  "crossing_objects": [
+    {
+      "color": "cyan",
+      "digit_id": "30",
+      "crossing_time": 47.8,
+      "lane_y": 561.6,
+      "amplitude": 9.566701279994795,
+      "phase": 4.559967586108655,
+      "direction": -1.0
+    },
+    {
+      "color": "orange",
+      "digit_id": "32",
+      "crossing_time": 47.89,
+      "lane_y": 158.4,
+      "amplitude": 10.365969053036947,
+      "phase": 1.4986569044381282,
+      "direction": -1.0
+    },
+    {
+      "color": "red",
+      "digit_id": "48",
+      "crossing_time": 47.98,
+      "lane_y": 480.96000000000004,
+      "amplitude": 8.915388343203531,
+      "phase": 3.5077187355243082,
+      "direction": -1.0
+    },
+    {
+      "color": "green",
+      "digit_id": "45",
+      "crossing_time": 48.07,
+      "lane_y": 239.04000000000002,
+      "amplitude": 9.780465476287672,
+      "phase": 4.425609664458731,
+      "direction": -1.0
+    },
+    {
+      "color": "yellow",
+      "digit_id": "54",
+      "crossing_time": 48.16,
+      "lane_y": 400.32000000000005,
+      "amplitude": 11.39200064936541,
+      "phase": 4.363938249502957,
+      "direction": -1.0
+    },
+    {
+      "color": "magenta",
+      "digit_id": "49",
+      "crossing_time": 48.25,
+      "lane_y": 319.68000000000006,
+      "amplitude": 7.951158142296595,
+      "phase": 5.447533522164831,
+      "direction": -1.0
+    }
+  ],
+  "ambient_decoys": [
+    {
+      "color": "yellow",
+      "center_x": 320.0,
+      "center_y": 539.0058535014728,
+      "radius_x": 142.69273277524243,
+      "radius_y": 171.18019391609667,
+      "speed_factor": 1.0299641987059878,
+      "phase": 2.3567258717734565
+    },
+    {
+      "color": "cyan",
+      "center_x": 960.0,
+      "center_y": 346.12974149428806,
+      "radius_x": 124.041447079426,
+      "radius_y": 151.43378912905024,
+      "speed_factor": 1.223300706764843,
+      "phase": 0.6047764102268786
+    },
+    {
+      "color": "magenta",
+      "center_x": 320.0,
+      "center_y": 145.4303846974611,
+      "radius_x": 162.71043687625337,
+      "radius_y": 148.85398832474812,
+      "speed_factor": 1.6060321831112114,
+      "phase": 3.4400460175356904
+    },
+    {
+      "color": "magenta",
+      "center_x": 960.0,
+      "center_y": 566.5011785822236,
+      "radius_x": 116.23814691534116,
+      "radius_y": 174.29485320068824,
+      "speed_factor": 1.534716702003624,
+      "phase": 3.5263058698835335
+    },
+    {
+      "color": "blue",
+      "center_x": 320.0,
+      "center_y": 229.5937271737699,
+      "radius_x": 176.81000604797637,
+      "radius_y": 102.19625174452588,
+      "speed_factor": 1.4908618320443003,
+      "phase": 5.737745263170529
+    }
+  ],
+  "expected_order": [
+    {
+      "color": "cyan",
+      "id": "30",
+      "time": 47.8
+    },
+    {
+      "color": "orange",
+      "id": "32",
+      "time": 47.89
+    },
+    {
+      "color": "red",
+      "id": "48",
+      "time": 47.98
+    },
+    {
+      "color": "green",
+      "id": "45",
+      "time": 48.07
+    },
+    {
+      "color": "yellow",
+      "id": "54",
+      "time": 48.16
+    },
+    {
+      "color": "magenta",
+      "id": "49",
+      "time": 48.25
+    }
+  ],
+  "expected_colors": [
+    "cyan",
+    "orange",
+    "red",
+    "green",
+    "yellow",
+    "magenta"
+  ],
+  "expected_ids": [
+    "30",
+    "32",
+    "48",
+    "45",
+    "54",
+    "49"
+  ],
+  "video": {
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "object_radius": 22
+  },
+  "background": "#111827",
+  "clip": "generated_needle/clips/needle_event_48s.mp4",
+  "clip_sha256": "5f2a33e4ecd48dff2713fe6930b826d612e9800afdb913f5f5a8c62704e03b83"
+}

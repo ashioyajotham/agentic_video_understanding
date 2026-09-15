@@ -1,0 +1,25 @@
+.env
+.gcloud-config/
+.pip-temp/
+.pip-cache/
+.venv*/
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+showcase/generated_canonical_phase4/
+# Local evaluator outputs; frozen public evidence lives under results/
+/artifacts/runs/
+/submission/x-post-phase4.md
+artifacts/videos/**/*.mp4
+artifacts/runs/**
+artifacts/reports/**
+artifacts/videos/**/*.mp4
+artifacts/runs/**
+artifacts/reports/**
+artifacts/videos/**/*.mp4
+artifacts/runs/**
+artifacts/reports/**
+!artifacts/videos/.gitkeep
+!artifacts/runs/.gitkeep
+!artifacts/reports/.gitkeep

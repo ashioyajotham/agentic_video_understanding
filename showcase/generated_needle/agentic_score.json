@@ -1,0 +1,127 @@
+{
+  "total_attempts": 3,
+  "color_exact": 3,
+  "color_exact_rate": 1.0,
+  "id_exact": 3,
+  "id_exact_rate": 1.0,
+  "full_exact": 3,
+  "full_exact_rate": 1.0,
+  "rows": [
+    {
+      "variant_id": "needle_event_22s",
+      "mode": "agentic_tool_loop",
+      "expected_colors": [
+        "blue",
+        "magenta",
+        "yellow",
+        "orange",
+        "cyan"
+      ],
+      "predicted_colors": [
+        "blue",
+        "magenta",
+        "yellow",
+        "orange",
+        "cyan"
+      ],
+      "expected_ids": [
+        "74",
+        "97",
+        "54",
+        "48",
+        "31"
+      ],
+      "predicted_ids": [
+        "74",
+        "97",
+        "54",
+        "48",
+        "31"
+      ],
+      "color_exact": true,
+      "id_exact": true,
+      "full_exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "needle_event_48s",
+      "mode": "agentic_tool_loop",
+      "expected_colors": [
+        "cyan",
+        "orange",
+        "red",
+        "green",
+        "yellow",
+        "magenta"
+      ],
+      "predicted_colors": [
+        "cyan",
+        "orange",
+        "red",
+        "green",
+        "yellow",
+        "magenta"
+      ],
+      "expected_ids": [
+        "30",
+        "32",
+        "48",
+        "45",
+        "54",
+        "49"
+      ],
+      "predicted_ids": [
+        "30",
+        "32",
+        "48",
+        "45",
+        "54",
+        "49"
+      ],
+      "color_exact": true,
+      "id_exact": true,
+      "full_exact": true,
+      "status": "completed"
+    },
+    {
+      "variant_id": "needle_event_68s",
+      "mode": "agentic_tool_loop",
+      "expected_colors": [
+        "cyan",
+        "green",
+        "red",
+        "orange",
+        "magenta",
+        "blue"
+      ],
+      "predicted_colors": [
+        "cyan",
+        "green",
+        "red",
+        "orange",
+        "magenta",
+        "blue"
+      ],
+      "expected_ids": [
+        "33",
+        "24",
+        "72",
+        "16",
+        "22",
+        "67"
+      ],
+      "predicted_ids": [
+        "33",
+        "24",
+        "72",
+        "16",
+        "22",
+        "67"
+      ],
+      "color_exact": true,
+      "id_exact": true,
+      "full_exact": true,
+      "status": "completed"
+    }
+  ]
+}
